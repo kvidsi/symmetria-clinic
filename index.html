@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Symmetria — Інститут цифрової ортодонтії та естетики</title>
+  <meta name="description" content="Symmetria — клініка цифрової ортодонтії та естетичної стоматології в Києві. 3D-сканування, комп’ютерна симуляція усмішки, фіксована вартість і письмова гарантія.">
+  <meta name="robots" content="noindex, nofollow"><!-- навчальний проєкт: вигадана клініка, не показувати в пошуку -->
+  <meta name="theme-color" content="#0F1517">
+    <link rel="canonical" href="https://symmetria-clinic.vercel.app/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"><!-- TODO: за потреби додати favicon.ico (32×32) -->
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"><!-- TODO: замінити на фінальну іконку 180×180 -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="uk_UA">
+  <meta property="og:site_name" content="Symmetria">
+  <meta property="og:title" content="Symmetria — Інститут цифрової ортодонтії та естетики">
+  <meta property="og:description" content="3D-сканування, комп’ютерна симуляція усмішки, фіксована вартість і письмова гарантія. Запис на візит у Києві.">
+  <meta property="og:url" content="https://symmetria-clinic.vercel.app/">
+  
+  <meta property="og:image" content="https://symmetria-clinic.vercel.app/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Symmetria — цифрова ортодонтія та естетика усмішки">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Symmetria — Інститут цифрової ортодонтії та естетики">
+  <meta name="twitter:description" content="3D-сканування, комп’ютерна симуляція усмішки, фіксована вартість і письмова гарантія.">
+  <meta name="twitter:image" content="https://symmetria-clinic.vercel.app/og-image.jpg">
+
+  <!-- GA4: вставити тег тут -->
+  <!-- Meta Pixel: вставити тут -->
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #F8F6F2;
+      color: #12191B;
+      font-family: 'Manrope', -apple-system, sans-serif;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: 0; background: none; }
+
+    .wrap { max-width: 1360px; margin: 0 auto; padding: 0 28px; }
+
+    /* Преміальні ефекти скла та фонів */
+    .glass {
+      background: rgba(255, 255, 255, 0.68);
+      -webkit-backdrop-filter: blur(28px) saturate(170%);
+      backdrop-filter: blur(28px) saturate(170%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 24px;
+      box-shadow: 0 15px 45px rgba(20, 28, 30, 0.05);
+    }
+    .dark-card {
+      background: #11181A;
+      color: #F5F4F0;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Кнопки */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 52px;
+      padding: 0 32px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .02em;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn.dark { background: #11181A; color: #FFFFFF; }
+    .btn.dark:hover { background: #263438; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(17,24,26,0.18); }
+    .btn.gold { background: #D0B48A; color: #11181A; }
+    .btn.gold:hover { background: #DEC49D; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(208,180,138,0.3); }
+
+    /* Типографіка з референсів */
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: #637571;
+      font-weight: 800;
+    }
+    .huge-title {
+      font-weight: 800;
+      letter-spacing: -.06em;
+      line-height: .92;
+    }
+    .thin { font-weight: 200; }
+
+    /* Сітки */
+    .grid { display: grid; gap: 24px; }
+
+    /* Таби напрямків */
+    .dir-nav-btn {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      width: 100%;
+      padding: 24px 0;
+      border-bottom: 1px solid #DED9CE;
+      text-align: left;
+      transition: all .25s ease;
+    }
+    .dir-nav-btn:hover { padding-left: 8px; }
+    .dir-nav-btn.active .dir-name { color: #11181A; }
+    .dir-nav-btn.active .dir-idx { color: #D0B48A; }
+
+    /* Слайдер До / Після */
+    .case-slider-wrap {
+      position: relative;
+      height: 480px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(18,25,27,0.12);
+      user-select: none;
+      background: #11181A;
+    }
+    .case-img-layer {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center 58%;
+    }
+    .case-after-layer {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center 58%;
+      clip-path: inset(0 0 0 50%);
+    }
+    .case-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: #FFFFFF;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .case-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 46px;
+      height: 46px;
+      background: #11181A;
+      color: #FFFFFF;
+      border: 3px solid #FFFFFF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      font-size: 14px;
+    }
+
+    /* Селектор кейсів */
+    .case-badge-btn {
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      border: 1px solid rgba(18,25,27,0.15);
+      color: #12191B;
+      background: transparent;
+      transition: all 0.25s;
+    }
+    .case-badge-btn.active {
+      background: #11181A;
+      color: #FFFFFF;
+      border-color: #11181A;
+    }
+
+    /* Інпути */
+    input[type=text], input[type=tel] {
+      width: 100%;
+      min-height: 54px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.9);
+      background: rgba(255, 255, 255, 0.85);
+      padding: 0 24px;
+      font: 500 15px 'Manrope', sans-serif;
+      color: #12191B;
+      outline: none;
+      transition: all .2s;
+    }
+    input[type=text]:focus, input[type=tel]:focus {
+      background: #FFFFFF;
+      border-color: #11181A;
+    }
+    input[type=range] {
+      width: 100%;
+      accent-color: #11181A;
+      cursor: ew-resize;
+    }
+
+    @media (max-width: 960px) {
+      .hero-ph { height: auto !important; min-height: 820px; padding-bottom: 40px; }
+      .case-slider-wrap { height: 360px; }
+    }
+
+    html.js .rv{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+    html.js .rv.in{opacity:1;transform:none}
+    .glass-d{background:rgba(255,255,255,.06);-webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);border:1px solid rgba(255,255,255,.15);border-radius:24px;color:#F3F1EC;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+    .hero{position:relative;height:860px;border-radius:36px;overflow:hidden;background:#1E1F24;color:#F3F1EC}
+    .hero-top{position:absolute;top:26px;left:28px;right:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:10}
+    .hero-nav{display:flex;gap:2px;padding:6px;border-radius:999px}
+    .hero-nav a,.sticky a.sl{padding:10px 18px;font-size:13px;font-weight:700;border-radius:999px;transition:background .25s}
+    .hero-nav a:hover,.sticky a.sl:hover{background:rgba(255,255,255,.12)}
+    .hero-word{position:absolute;left:0;right:0;bottom:-.04em;text-align:center;font-weight:800;letter-spacing:-.06em;line-height:.8;font-size:clamp(48px,14.2vw,206px);background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,.05));-webkit-background-clip:text;background-clip:text;color:transparent;pointer-events:none;z-index:1}
+    .hero-stage{position:absolute;inset:0;z-index:2;perspective:1200px;pointer-events:none}
+    .hero-float{position:absolute;left:50%;top:51%;width:1580px;animation:floaty 7s ease-in-out infinite}
+    .hero-tooth{display:block;width:100%;height:auto;mix-blend-mode:lighten;transform:translate(-50%,-50%) rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg));transition:transform .25s ease-out;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);mask-image:radial-gradient(closest-side,#000 62%,transparent 100%)}
+    @keyframes floaty{0%,100%{margin-top:-8px}50%{margin-top:10px}}
+    .hero-card{position:absolute;z-index:5;padding:32px}
+    .hero-left{left:36px;top:132px;width:380px}
+    .hero-right{right:36px;top:140px;width:320px;padding:26px;display:flex;flex-direction:column;gap:18px}
+    .hero-tags{position:absolute;left:36px;bottom:40px;display:flex;gap:10px;z-index:5;flex-wrap:wrap;max-width:60%}
+    .hero-tags span{padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700}
+    .burger{display:none;width:46px;height:46px;border-radius:50%;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+    .burger i{display:block;width:18px;height:2px;background:#fff}
+    .mmenu{position:fixed;inset:0;background:#14161A;color:#F3F1EC;z-index:100;display:flex;flex-direction:column;justify-content:center;padding:28px;gap:4px;transform:translateY(-100%);transition:transform .55s cubic-bezier(.16,1,.3,1)}
+    .mmenu.open{transform:none}
+    .mmenu a{font-size:clamp(34px,10vw,52px);font-weight:800;letter-spacing:-.05em;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+    .mm-x{position:absolute;top:22px;right:22px;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.3);color:#fff;font-size:18px}
+    .sticky{position:fixed;top:14px;left:50%;transform:translate(-50%,-140%);z-index:60;display:flex;align-items:center;gap:6px;padding:6px 6px 6px 22px;border-radius:999px;transition:transform .5s cubic-bezier(.16,1,.3,1);white-space:nowrap}
+    .sticky.show{transform:translate(-50%,0)}
+    .sticky .btn{min-height:42px;padding:0 22px}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid #DED9CE;border-bottom:1px solid #DED9CE}
+    .stat{padding:34px 24px;border-right:1px solid #DED9CE}.stat:last-child{border-right:0}
+    .stat b{display:block;font-size:clamp(40px,5vw,72px);font-weight:800;letter-spacing:-.06em;line-height:1}
+    .stat span{display:block;margin-top:10px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#637571}
+    .marquee{overflow:hidden;border-bottom:1px solid #DED9CE;padding:26px 0;margin-bottom:120px;white-space:nowrap}
+    .marquee div{display:inline-block;animation:mq 38s linear infinite;font-size:clamp(34px,5vw,72px);font-weight:200;letter-spacing:-.04em;color:#11181A}
+    .marquee em{font-style:normal;color:#D0B48A;margin:0 .45em}
+    @keyframes mq{to{transform:translateX(-50%)}}
+    .case-slider-wrap{cursor:ew-resize;touch-action:pan-y}
+    .case-badge-btn:hover{border-color:#11181A}
+    .dir-panel-anim{animation:fadeUp .6s cubic-bezier(.16,1,.3,1)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+    .dark-card,.glass{transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s}
+    .proto{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:48px;align-items:stretch}
+    .pstep{display:flex;gap:20px;align-items:baseline;width:100%;text-align:left;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.12);color:#6F807C;transition:color .3s,padding .3s}
+    .pstep:hover{padding-left:8px}.pstep.active{color:#fff}.pstep.active .pn{color:#D0B48A}
+    .pbar{height:2px;background:rgba(255,255,255,.12);margin-top:-1px;position:relative;overflow:hidden}
+    .pbar i{position:absolute;left:0;top:0;bottom:0;background:#D0B48A;width:0}
+    .sp{display:flex;gap:12px;height:540px}
+    .sp-i{flex:1;position:relative;border-radius:28px;overflow:hidden;transition:flex .7s cubic-bezier(.16,1,.3,1);cursor:pointer;background:#1b2326 center/cover no-repeat;color:#fff;min-width:0}
+    .sp-i.active{flex:3.4}
+    .sp-i::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,16,.05) 30%,rgba(10,14,16,.85))}
+    .sp-i .sp-t{position:absolute;left:24px;right:24px;bottom:24px;z-index:2}
+    .sp-i .sp-t b{display:block;font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .sp-i .sp-t span{display:block;font-size:14px;color:#C9D4D1;margin-top:6px;max-height:0;opacity:0;overflow:hidden;transition:all .6s}
+    .sp-i.active .sp-t span{max-height:80px;opacity:1}
+    .tscroll{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 24px;scrollbar-width:none}
+    .tscroll::-webkit-scrollbar{display:none}
+    .tcard{flex:0 0 min(420px,86%);scroll-snap-align:start;padding:34px;display:flex;flex-direction:column;gap:22px;justify-content:space-between}
+    .tph{width:58px;height:58px;flex:0 0 58px;border-radius:50%;overflow:hidden;background:#d8d3c8}.tph img{width:100%;height:100%;object-fit:cover;display:block}
+    .arrow{width:52px;height:52px;border-radius:50%;border:1px solid rgba(18,25,27,.2);font-size:18px;transition:all .25s}
+    .arrow:hover{background:#11181A;color:#fff}
+    .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
+    .noimg{display:flex;align-items:flex-end;padding:20px;color:#8FA19D;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(135deg,#1b2629,#2a3a3d)}
+    @media (hover:hover){.dark-card:hover{box-shadow:0 40px 90px rgba(17,24,26,.22)}.glass:hover{transform:translateY(-3px)}}
+    @media (max-width:960px){
+      .wrap{padding:0 16px}
+      .hero{height:auto;display:flex;flex-direction:column;padding:92px 14px 18px;gap:14px;border-radius:28px}
+      .hero-nav{display:none}.burger{display:flex}
+      .hero-top{top:16px;left:16px;right:16px}
+      .hero-top .btn{display:none}
+      .hero-stage{position:relative;inset:auto;height:360px;order:1;overflow:hidden}
+      .hero-float{width:880px;top:50%}
+      .hero-word{position:relative;order:2;bottom:auto;font-size:14.2vw;margin:-22px 0 6px}
+      .hero-card{position:static;width:auto;order:3;padding:24px}
+      .hero-right{order:4}
+      .hero-tags{position:static;order:5;max-width:none}
+      .sticky .sl{display:none}.sticky{padding-left:18px}
+      .stats{grid-template-columns:1fr 1fr}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid #DED9CE}.stat{padding:26px 16px}
+      .proto{grid-template-columns:1fr;gap:28px}
+      .sp{flex-direction:column;height:680px}.sp-i.active{flex:3}
+      .dark-card{padding:26px 20px !important;border-radius:24px}
+      .case-slider-wrap{height:340px}
+      section[style*="padding-bottom:clamp(64px,8vw,104px)"]{padding-bottom:84px !important}
+      .wrap[style*="140px 0 100px"]{padding:80px 16px 60px !important}
+      .marquee{margin-bottom:72px}
+      #casesBadgesContainer{flex-wrap:nowrap !important;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+      #casesBadgesContainer button{white-space:nowrap}
+      footer.wrap{padding-bottom:40px}
+      #appointmentForm,#zapys .glass{width:100% !important}
+    }
+    @media (max-width:520px){.stat b{font-size:42px}.sticky .btn{padding:0 16px;font-size:13px}}
+
+    .hero-scroll{height:270vh;position:relative}
+    .hero-sticky{position:sticky;top:0;padding-top:16px;padding-bottom:16px;height:100vh;box-sizing:border-box}
+    .hero{height:100%;min-height:600px;--p:0}
+    .hero-video{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;pointer-events:none}
+    .hero-tooth{transform:translate(-50%,-50%) rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg)) scale(calc(1 + var(--p) * .32))}
+    .hero-card{opacity:calc(1 - var(--p) * 1.7);transform:translateY(calc(var(--p) * -36px))}
+    .hero-word{transform:translateY(calc(var(--p) * 40px)) scale(calc(1 + var(--p) * .06));opacity:calc(1 - var(--p) * .5)}
+    .hero-tags{opacity:calc(1 - var(--p) * 2)}
+    .scrollhint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:6;font-size:11px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:#8FA19D;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:calc(1 - var(--p) * 5)}
+    .scrollhint i{display:block;width:1px;height:34px;background:linear-gradient(#D0B48A,transparent);animation:sh 1.8s ease-in-out infinite}
+    @keyframes sh{0%{transform:scaleY(.2);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(1);transform-origin:bottom;opacity:0}}
+    @media (max-width:960px){.hero-scroll{height:auto}.hero-sticky{position:relative;height:auto}.hero{height:auto;min-height:0}.scrollhint{display:none}.hero-video{position:relative;height:100%}}
+  
+    /* === pinned scroll-scrub hero, all screen sizes === */
+    .hero-scroll{height:700vh!important;position:relative}
+    .hero-sticky{position:sticky!important;top:0;height:100vh;height:100svh;box-sizing:border-box;padding-top:12px;padding-bottom:12px}
+    .hero{height:100%!important;min-height:0!important;display:block!important;padding:0!important}
+    .hero-stage{position:absolute!important;inset:0!important;height:auto!important;z-index:1;overflow:hidden}
+    .hero-video{display:block!important;position:absolute!important;inset:0;width:100%;height:100%!important;object-fit:cover;z-index:1}
+    .hero-float{display:none!important}
+    .hero-stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,14,.55),rgba(10,12,14,0) 30%,rgba(10,12,14,0) 55%,rgba(10,12,14,.6))}
+    .hero-top{position:absolute;left:28px;right:28px;top:26px;z-index:10}
+    .hero-word{position:absolute!important;left:0;right:0;bottom:-.04em;margin:0!important;z-index:3}
+    .hero-card{z-index:5}
+    @media (max-width:960px){
+      .hero-top{top:16px;left:16px;right:16px;padding:0}
+      .hero-right{display:none!important}.hero-left{position:absolute!important;left:12px!important;right:12px!important;top:auto!important;bottom:calc(14.2vw + 56px)!important;width:auto!important;padding:20px!important}.hero-left h1{font-size:30px!important}.hero-left p{font-size:14px!important;margin:10px 0 14px!important}
+      .hero-tags{display:none!important}
+      .scrollhint{display:flex!important}
+    }
+  
+    /* FULL-BLEED HERO + OVERLAP */
+    .hero-sticky{max-width:none!important;width:100%!important;padding:0!important;height:100vh;height:100svh}
+    .hero{border-radius:0!important}
+    .hero-top{left:clamp(20px,3vw,48px)!important;right:clamp(20px,3vw,48px)!important}
+    .hero-scroll{height:800vh!important}
+    #next-section{position:relative;z-index:5;margin-top:-100vh;margin-top:-100svh;min-height:100vh;background:#F8F6F2;border-radius:48px 48px 0 0;box-shadow:0 -22px 44px -26px rgba(0,0,0,.38)}
+    @media (max-width:700px){#next-section{border-radius:32px 32px 0 0}}
+  
+    .mmenu{visibility:hidden;overflow-y:auto;justify-content:safe center;transition:transform .55s cubic-bezier(.16,1,.3,1),visibility 0s linear .55s}
+    .mmenu.open{visibility:visible;transition:transform .55s cubic-bezier(.16,1,.3,1),visibility 0s}
+  
+    /* ---- sticky nav: adaptive theme + active indicator ---- */
+    .sticky{background:rgba(17,24,26,.78)!important;-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);border:1px solid rgba(255,255,255,.14);color:#F3F1EC;box-shadow:0 18px 50px rgba(0,0,0,.22);transition:transform .5s cubic-bezier(.16,1,.3,1),background .4s,color .4s,border-color .4s}
+    .sticky.on-light{background:rgba(255,255,255,.84)!important;color:#11181A;border-color:rgba(17,24,26,.1);box-shadow:0 14px 40px rgba(17,24,26,.12)}
+    .sticky a{color:inherit}.sticky .btn.gold{color:#11181A}
+    .sticky.on-light a.sl:hover{background:rgba(17,24,26,.06)}
+    .sticky a.sl{position:relative;z-index:1}
+    .nav-ind{position:absolute;top:6px;bottom:6px;left:0;width:0;border-radius:999px;background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);opacity:0;pointer-events:none;z-index:0;transition:left .5s cubic-bezier(.16,1,.3,1),width .5s cubic-bezier(.16,1,.3,1),opacity .3s,background .4s,box-shadow .4s}
+    .sticky.on-light .nav-ind{background:rgba(17,24,26,.07);box-shadow:inset 0 0 0 1px rgba(17,24,26,.18)}
+    .hero-top{transition:opacity .3s}
+    .hero.hide-top .hero-top{opacity:0;pointer-events:none}
+    /* ---- ripple ---- */
+    .btn.ripple{position:relative;overflow:hidden}
+    .ripple-dot{position:absolute;border-radius:50%;background:rgba(255,255,255,.4);transform:scale(0);opacity:.4;pointer-events:none;animation:rp .6s ease-out forwards}
+    @keyframes rp{to{transform:scale(4);opacity:0}}
+    /* ---- back to top ---- */
+    .totop{position:fixed;right:22px;bottom:22px;width:52px;height:52px;border-radius:50%;background:#D0B48A;color:#11181A;border:0;display:flex;align-items:center;justify-content:center;z-index:70;cursor:pointer;box-shadow:0 12px 30px rgba(17,24,26,.28);opacity:0;transform:translateY(16px) scale(.9);pointer-events:none;transition:opacity .4s,transform .4s cubic-bezier(.16,1,.3,1),background .3s}
+    .totop.show{opacity:1;transform:none;pointer-events:auto}
+    .totop:hover{background:#DEC49D;transform:translateY(-3px)}
+    .totop svg{width:20px;height:20px}
+    /* ---- scroll hint line ---- */
+    .scrollhint i{height:48px;background:linear-gradient(#D0B48A,#D0B48A);animation:sh2 2s cubic-bezier(.65,0,.35,1) infinite}
+    @keyframes sh2{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+    /* ---- spaces smooth ---- */
+    .sp-i,html.js .sp-i.rv{transition:flex .9s cubic-bezier(.22,1,.36,1),opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+    .sp-bg{position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;transform:scale(1.2);filter:saturate(.7) brightness(.9);transition:transform 1.5s cubic-bezier(.22,1,.36,1),filter .9s}
+    .sp-i.active .sp-bg{transform:scale(1);filter:none}
+    .sp-i::after{transition:opacity .8s}
+    .sp-i:not(.active)::after{opacity:.75}
+    .sp-i .sp-t{transform:translateY(14px);transition:transform .9s cubic-bezier(.22,1,.36,1)}
+    .sp-i.active .sp-t{transform:none}
+    .sp-i .sp-t b{overflow-wrap:anywhere}
+    .sp-i .sp-t span{transition:max-height .9s cubic-bezier(.22,1,.36,1),opacity .7s .15s}
+    @media (max-width:960px){.totop{right:16px;bottom:16px}}
+  
+    /* ---- v3: glass nav, gold underline indicator, hover waves ---- */
+    .sticky{background:rgba(17,24,26,.34)!important;-webkit-backdrop-filter:blur(30px) saturate(190%) brightness(.9);backdrop-filter:blur(30px) saturate(190%) brightness(.9);border:1px solid rgba(255,255,255,.2);box-shadow:0 18px 50px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.28)}
+    .sticky.on-light{background:rgba(255,255,255,.52)!important;-webkit-backdrop-filter:blur(30px) saturate(190%) brightness(1.06);backdrop-filter:blur(30px) saturate(190%) brightness(1.06);border-color:rgba(255,255,255,.75);box-shadow:0 14px 40px rgba(17,24,26,.12),inset 0 1px 0 rgba(255,255,255,.9)}
+    .sticky a.sl{transition:color .3s,font-weight .3s}
+    .sticky a.sl.active{font-weight:800}
+    .nav-ind{top:auto!important;bottom:4px;height:3px!important;border-radius:3px;background:#D0B48A!important;box-shadow:0 0 10px rgba(208,180,138,.75)!important}
+    .sticky.on-light .nav-ind{background:#B8955C!important;box-shadow:0 0 8px rgba(184,149,92,.5)!important}
+    .btn.wave{position:relative;overflow:hidden}
+    .wave-dot{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.6) 0,rgba(255,255,255,.28) 55%,rgba(255,255,255,0) 70%);box-shadow:0 0 0 2px rgba(255,255,255,.35);transform:scale(0);opacity:1;pointer-events:none;animation:wv 1.4s cubic-bezier(.2,.7,.3,1) forwards}
+    .btn.dark.wave .wave-dot{background:radial-gradient(circle,rgba(255,255,255,.45) 0,rgba(255,255,255,.2) 55%,rgba(255,255,255,0) 70%);box-shadow:0 0 0 2px rgba(255,255,255,.3)}
+    @keyframes wv{0%{transform:scale(0);opacity:1}60%{opacity:.55}100%{transform:scale(4.5);opacity:0}}
+  
+    /* ---- v4: scroll hint, back-to-top gate, ring waves ---- */
+    .scrollhint{bottom:34px!important;color:#fff!important;font-size:12px!important;letter-spacing:.3em!important;text-shadow:0 2px 12px rgba(0,0,0,.55);gap:14px!important;z-index:12!important}
+    .scrollhint i{width:2px!important;height:64px!important;border-radius:2px;position:relative;overflow:hidden;background:rgba(255,255,255,.28)!important;animation:none!important;box-shadow:0 0 12px rgba(0,0,0,.25)}
+    .scrollhint i::after{content:"";position:absolute;inset:0;background:#D0B48A;animation:sh2 2s cubic-bezier(.65,0,.35,1) infinite}
+    .wave-dot{background:transparent!important;box-shadow:none!important;border:1.5px solid rgba(255,255,255,.75);opacity:0;animation:ring 1s cubic-bezier(.2,.6,.3,1) both!important}
+    .btn.dark.wave .wave-dot{border-color:rgba(255,255,255,.5)}
+    @keyframes ring{0%{transform:scale(0);opacity:.7}100%{transform:scale(1);opacity:0}}
+  
+    .wave-dot{border:2px solid rgba(17,24,26,.38)!important;background:rgba(17,24,26,.07)!important}
+    .btn.dark.wave .wave-dot{border-color:rgba(255,255,255,.6)!important;background:rgba(255,255,255,.1)!important}
+    @keyframes ring{0%{transform:scale(0);opacity:1}100%{transform:scale(1);opacity:0}}
+  
+    /* ---- v5: softer spaces animation ---- */
+    .sp-i,html.js .sp-i.rv{transition:flex 1.15s cubic-bezier(.45,.05,.2,1),opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+    .sp-bg{left:50%!important;right:auto!important;width:var(--spw,100%)!important;min-width:100%;transform:translateX(-50%) scale(1.1)!important;filter:saturate(.8) brightness(.93);transition:transform 1.6s cubic-bezier(.25,.1,.25,1),filter 1.1s ease!important}
+    .sp-i.active .sp-bg{transform:translateX(-50%) scale(1)!important;filter:none}
+    .sp-i::after{transition:opacity 1.1s ease!important}
+    .sp-i .sp-t{transition:transform 1.1s cubic-bezier(.25,.1,.25,1),opacity .8s!important}
+    .sp-i .sp-t span{transition:max-height 1.1s cubic-bezier(.25,.1,.25,1),opacity .9s ease .25s!important}
+    @media (max-width:960px){.sp-bg{width:100%!important}}
+  
+    /* ---- v6: calmer scroll hint, clean continuous waves ---- */
+    .scrollhint{left:auto!important;right:clamp(20px,3vw,48px)!important;bottom:28px!important;transform:none!important;font-size:10px!important;letter-spacing:.22em!important;color:rgba(255,255,255,.62)!important;text-shadow:none!important;gap:10px!important;align-items:center}
+    .scrollhint i{height:40px!important;width:1px!important;box-shadow:none!important;background:rgba(255,255,255,.2)!important}
+    .scrollhint i::after{background:rgba(208,180,138,.85)}
+    .btn.gold.wave:hover{background:#D0B48A!important;transform:none!important;box-shadow:none!important}
+    .btn.dark.wave:hover{background:#11181A!important;transform:none!important;box-shadow:none!important}
+    .wave-dot{border:0!important;box-shadow:none!important;background:radial-gradient(circle,rgba(17,24,26,.16) 0,rgba(17,24,26,.12) 40%,rgba(17,24,26,0) 68%)!important;animation:ring 1.6s cubic-bezier(.2,.6,.3,1) both!important}
+    .btn.dark.wave .wave-dot{background:radial-gradient(circle,rgba(255,255,255,.2) 0,rgba(255,255,255,.13) 40%,rgba(255,255,255,0) 68%)!important}
+    @keyframes ring{0%{transform:scale(0);opacity:1}100%{transform:scale(1);opacity:0}}
+  
+    .wave-dot{animation:ring 2.8s cubic-bezier(.3,.1,.3,1) both!important}
+    @keyframes ring{0%{transform:scale(0);opacity:0}18%{opacity:1}100%{transform:scale(1);opacity:0}}
+  
+    /* ---- FOOTER: Від хаосу до симетрії ---- */
+    .ft{position:relative;background:#0F1517;color:#F3F1EC;overflow:hidden;padding:clamp(40px,4.6vw,64px) 0 26px;margin-top:clamp(40px,6vw,80px);border-radius:48px 48px 0 0}
+    .ft-axis{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,rgba(208,180,138,0),rgba(208,180,138,.75) 18%,rgba(208,180,138,.75) 82%,rgba(208,180,138,0));transform:scaleY(0);transform-origin:top;pointer-events:none}
+    .ft-inner{position:relative;z-index:1;width:min(1304px,92%);margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center}
+    .ft-tag{font-size:12px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:#D0B48A;margin-bottom:clamp(14px,2vw,26px);opacity:.9}
+    .ft-wordwrap{position:relative;display:flex;flex-direction:column;align-items:center;padding:0 2vw}
+    .ft-word{display:flex;font-weight:800;letter-spacing:-.05em;line-height:.95;font-size:clamp(50px,14vw,214px);white-space:nowrap}
+    .ft-word span{display:inline-block;will-change:transform}
+    .ft-dot{color:#D0B48A}
+    .ft-refl{transform:scaleY(-1);margin-top:-.04em;opacity:.16;-webkit-mask-image:linear-gradient(0deg,transparent 10%,#000 100%);mask-image:linear-gradient(0deg,transparent 10%,#000 100%);height:.62em;overflow:hidden;align-items:flex-end}
+    .ft-cols{width:100%;display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(20px,4vw,64px);align-items:center;margin-top:clamp(22px,2.6vw,38px);font-size:14px;line-height:1.7;color:#B9C3C0}
+    .ft-col{display:flex;flex-direction:column;gap:4px}
+    .ft-col b{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#D0B48A;margin-top:12px}.ft-col b:first-child{margin-top:0}
+    .ft-col a{color:#F3F1EC}.ft-col a:hover{color:#D0B48A}
+    .ft-l{text-align:right;align-items:flex-end}.ft-r{text-align:left;align-items:flex-start}
+    .ft-legal{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}.ft-legal a{color:#9BA8A5;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(208,180,138,.4)}.ft-legal a:hover{color:#D0B48A}
+    .ft-med{width:100%;margin-top:14px;font-size:11px;line-height:1.55;color:#6B7A77;text-align:center}
+    .ft-bot{width:100%;align-items:center;padding-right:64px;margin-top:clamp(26px,3vw,44px);padding-top:18px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;color:#7D8C89}
+    .ft-mdot{position:absolute;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#D0B48A;opacity:0;pointer-events:none;box-shadow:0 0 18px rgba(208,180,138,.8);transition:opacity .3s}
+    @media (max-width:760px){.ft{padding-bottom:84px}.ft-axis{opacity:.2}.ft{border-radius:32px 32px 0 0}.ft-cols{grid-template-columns:1fr;text-align:center}.ft-l,.ft-r{text-align:center;align-items:center}.ft-cta{justify-self:center;order:3}.ft-r{order:2}.ft-bot{justify-content:center;text-align:center;padding-right:0;padding-bottom:56px}}
+  
+    .consent{display:flex;gap:10px;align-items:flex-start;font-size:11.5px;line-height:1.45;color:#3F504D;cursor:pointer;text-align:left}
+    .consent input{width:16px;height:16px;flex:none;margin-top:1px;accent-color:#11181A;padding:0}
+    .consent a{text-decoration:underline;color:#11181A}
+    dialog.legal{border:0;padding:0;background:transparent;max-width:none;max-height:none;width:100%;height:100%}
+    dialog.legal::backdrop{background:rgba(10,14,15,.62);backdrop-filter:blur(6px)}
+    .lg-box{position:relative;margin:6vh auto;width:min(680px,92%);max-height:88vh;overflow:auto;background:#F7F5F0;color:#11181A;border-radius:28px;padding:clamp(28px,4vw,48px)}
+    .lg-box h2{font-size:clamp(26px,4vw,36px);letter-spacing:-.03em;margin-bottom:14px}
+    .lg-box h3{font-size:15px;margin:20px 0 6px}.lg-box p{font-size:14.5px;line-height:1.6;color:#3F504D}
+    .lg-note{background:#EDE6D8;border-radius:12px;padding:10px 14px;font-size:12.5px!important}
+    .lg-x{position:absolute;right:18px;top:14px;width:38px;height:38px;border-radius:50%;border:0;background:#11181A;color:#fff;font-size:22px;cursor:pointer}
+    .lg-date{font-size:12px!important;color:#7D8C89!important;margin:10px 0 0}
+    .lg-pane{display:none}.lg-pane.on{display:block}
+  
+    /* Pop in (spring) — 4 картки «Чому Symmetria» */
+    html.js #chomu .grid>.glass{opacity:0;transform:scale(0);transform-origin:center;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .3s ease}
+    html.js #chomu .grid>.glass.pop-in{opacity:1;transform:scale(1)}
+    html.js #chomu .grid>.glass.pop-done{transition:transform .3s ease,box-shadow .3s ease,background .3s ease}
+    @media (prefers-reduced-motion:reduce){html.js #chomu .grid>.glass{opacity:1;transform:none;transition:none}}
+  
+    /* ================= МОБІЛЬНА ВЕРСІЯ (≤760px) ================= */
+    @media (max-width:760px){
+      /* перемикачі: горизонтальна стрічка, закріплена зверху */
+      #dirListContainer,#protoList,#casesBadgesContainer{display:flex!important;flex-wrap:nowrap!important;flex-direction:row!important;gap:8px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-top:0!important;position:sticky;top:58px;z-index:30;padding:10px 2px;margin:0 -2px 14px;background:rgba(248,246,242,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+      #protoList{background:rgba(17,24,26,.92);margin:0 -2px 18px}
+      #dirListContainer::-webkit-scrollbar,#protoList::-webkit-scrollbar,#casesBadgesContainer::-webkit-scrollbar{display:none}
+      .dir-nav-btn{flex:0 0 auto!important;width:auto!important;padding:11px 18px!important;border:1px solid rgba(18,25,27,.16)!important;border-radius:999px;gap:8px!important;align-items:center!important;scroll-snap-align:center;white-space:nowrap;background:transparent}
+      .dir-nav-btn:hover{padding-left:18px!important}
+      .dir-nav-btn .dir-name{font-size:14px!important;font-weight:700!important;letter-spacing:0!important;color:#11181A!important}
+      .dir-nav-btn .dir-idx{display:none}
+      .dir-nav-btn.active{background:#11181A!important;border-color:#11181A!important}
+      .dir-nav-btn.active .dir-name{color:#fff!important}
+      .pbar{display:none}
+      .pstep{flex:0 0 auto!important;width:auto!important;padding:11px 16px!important;border:1px solid rgba(255,255,255,.2)!important;border-radius:999px;gap:8px!important;align-items:center!important;white-space:nowrap;scroll-snap-align:center;color:#9FB0AC}
+      .pstep:hover{padding-left:16px!important}
+      .pstep .huge-title{font-size:14px!important;font-weight:700!important;letter-spacing:0!important}
+      .pstep.active{background:#D0B48A;border-color:#D0B48A!important;color:#11181A}.pstep.active .pn{color:#11181A}
+      .case-badge-btn{flex:0 0 auto;white-space:nowrap;scroll-snap-align:center;padding:11px 18px}
+      #casesBadgesContainer{margin-bottom:16px}
+      /* картки компактніше */
+      #napryamy .dark-card{min-height:0!important;padding:26px 22px!important}
+      #dirTitle{font-size:32px!important}
+      #dirServicesGrid{margin:20px 0!important}
+      #napryamy .grid{gap:0!important}
+      #napryamy h2,#shlyakh h2,#chomu h2{margin-bottom:22px!important}
+      #rezultaty .dark-card{padding:22px 18px!important}
+      #rezultaty .dark-card .grid{gap:22px!important}
+      #rezultaty .dark-card .grid>*:nth-child(2){order:-1}
+      #protoPanel{padding:22px!important}
+      section{scroll-margin-top:60px}
+      /* секції ближче одна до одної */
+      #napryamy,#shlyakh,#rezultaty,#chomu{padding-bottom:44px!important}
+      /* футер */
+      .ft{padding:34px 0 20px!important;margin-top:28px}
+      .ft-tag{margin-bottom:14px;font-size:10.5px}
+      .ft-cols{grid-template-columns:1fr 1fr!important;gap:14px 16px!important;text-align:left!important;margin-top:18px;font-size:13px}
+      .ft-l,.ft-r{text-align:left!important;align-items:flex-start!important}
+      .ft-col b{margin-top:8px;font-size:10px}
+      .ft-cta{grid-column:1/-1;order:3;justify-self:stretch!important;text-align:center;width:100%}
+      .ft-bot{margin-top:18px!important;padding-top:14px!important;gap:8px 14px;font-size:11px;padding-right:0!important;padding-bottom:0!important}
+      .ft-med{margin-top:10px;padding-right:56px;font-size:10px;text-align:left}
+      .ft-legal{gap:6px 14px}
+      .ft-axis{display:none}
+      /* анімації: тактильний відгук і поява */
+      .btn:active,.glass:active,.case-badge-btn:active,.pstep:active,.dir-nav-btn:active{transform:scale(.97)}
+      html.js .rv{transform:translateY(34px)}
+      html.js .rv.in{transform:none}
+    }
+    .scrollbar-m{position:fixed;left:0;top:0;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,#B8955C,#D0B48A);z-index:100;pointer-events:none;display:none}
+    @media (max-width:760px){.scrollbar-m{display:block}}
+  
+    /* Піднято над плашкою «Powered by Netlify» (безкоштовний тариф), щоб вона не закривала елементи */
+    .totop{bottom:84px!important}
+    .scrollhint{bottom:88px!important}
+    @media (max-width:960px){.totop{bottom:84px!important;right:16px!important}}
+  </style>
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+
+  <!-- ================= 1. HERO COVER ================= -->
+  <button class="totop" id="toTop" aria-label="Догори"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <div id="sticky" class="sticky glass-d"><a href="#" style="font-weight:800;letter-spacing:-.04em;margin-right:10px">Symmetria<span style="color:#D0B48A">.</span></a><a class="sl" href="#napryamy">Напрями</a><a class="sl" href="#shlyakh">Кроки</a><a class="sl" href="#rezultaty">Кейси</a><a class="sl" href="#vidhuky">Відгуки</a><a class="sl" href="#tsiny">Вартість</a><a class="sl" href="#faq">FAQ</a><a href="#zapys" class="btn gold">Записатися</a><span class="nav-ind" id="navInd"></span></div>
+  <div id="mmenu" class="mmenu"><button class="mm-x" onclick="toggleMenu()" aria-label="Закрити">✕</button>
+    <a href="#napryamy" onclick="toggleMenu()">Напрями</a><a href="#shlyakh" onclick="toggleMenu()">Кроки</a><a href="#rezultaty" onclick="toggleMenu()">Кейси</a><a href="#chomu" onclick="toggleMenu()">Чому Symmetria</a><a href="#vidhuky" onclick="toggleMenu()">Відгуки</a><a href="#tsiny" onclick="toggleMenu()">Вартість</a><a href="#faq" onclick="toggleMenu()">FAQ</a><a href="#zapys" onclick="toggleMenu()" style="color:#D0B48A">Записатися</a></div>
+  <section class="hero-scroll" id="heroScroll"><header class="wrap hero-sticky">
+    <div class="hero" id="hero">
+      <div class="hero-top">
+        <a href="#" style="font-weight:800;font-size:26px;letter-spacing:-.05em">Symmetria<span style="color:#D0B48A">.</span></a>
+        <nav class="glass-d hero-nav"><a href="#napryamy">Напрями</a><a href="#shlyakh">Кроки</a><a href="#rezultaty">Кейси</a><a href="#vidhuky">Відгуки</a><a href="#tsiny">Вартість</a><a href="#faq">FAQ</a></nav>
+        <a href="#zapys" class="btn gold">Записатися на 3D-скан</a>
+        <button class="burger glass-d" onclick="toggleMenu()" aria-label="Меню"><i></i><i></i></button>
+      </div>
+      <div class="hero-word" aria-hidden="true">SYMMETRIA</div>
+      <div class="hero-stage"><video id="heroVideo" class="hero-video" muted playsinline preload="auto" poster="images/img-01.jpg" aria-hidden="true"></video><div class="hero-float" id="heroFloat"><div id="heroTooth" hidden></div></div></div>
+      <div class="hero-card hero-left glass-d">
+        <div class="eyebrow" style="margin-bottom:12px;color:#D0B48A">Digital Orthodontics</div>
+        <h1 class="huge-title" style="font-size:clamp(30px,3vw,38px);margin-bottom:16px">Спроектована естетика вашої усмішки.</h1>
+        <p style="font-size:15px;line-height:1.6;color:#B9C3C0;margin-bottom:26px">Не просто рівні зуби, а правильний прикус, відкритий погляд і гармонійна усмішка, підібрана саме під вас.</p>
+        <a href="#zapys" class="btn gold wave" style="width:100%">Скласти цифровий план</a>
+      </div>
+      <div class="hero-card hero-right glass-d">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+          <div><div class="huge-title" style="font-size:44px" data-count="99.4" data-dec="1" data-suf="%">99.4%</div><div style="font-size:11px;font-weight:800;color:#8FA19D;text-transform:uppercase;letter-spacing:.08em;margin-top:6px">Збіг 3D-плану</div></div>
+          <div><div class="huge-title" style="font-size:44px;color:#D0B48A" data-count="0" data-suf="%">0%</div><div style="font-size:11px;font-weight:800;color:#8FA19D;text-transform:uppercase;letter-spacing:.08em;margin-top:6px">Прихованих оплат</div></div>
+        </div>
+        <div style="font-size:13px;line-height:1.55;color:#B9C3C0;border-top:1px solid rgba(255,255,255,.12);padding-top:14px">Перед лікуванням ви бачите на екрані, як зміниться ваша усмішка, а вартість фіксуємо в договорі.</div>
+        <a href="#rezultaty" style="font-size:13px;font-weight:800">Дивитися клінічні кейси →</a>
+      </div>
+      <div class="scrollhint" aria-hidden="true"><i></i>Гортайте</div>
+    </div>
+  </header></section>
+
+  <div id="next-section">
+  <!-- ================= 2. STATEMENT (МАНІФЕСТ) ================= -->
+  <section class="wrap" style="padding:clamp(72px,9vw,120px) 0 clamp(48px,6vw,80px)">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:30px">
+      <div class="eyebrow">[ Philosophy & Standard ]</div>
+      <p class="huge-title" style="font-size:clamp(32px,4.5vw,66px);max-width:1050px;line-height:1.06">
+        Ми не просто лікуємо зуби, ми дбаємо про усмішку.
+        <span class="thin" style="color:#788A86">
+          У нас немає шаблонних рішень: кожну усмішку ми підбираємо під ваше обличчя, звички та побажання.
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div>ОРТОДОНТІЯ<em>✦</em>ЕСТЕТИКА<em>✦</em>ІМПЛАНТАЦІЯ<em>✦</em>МІКРОСКОП<em>✦</em>ДИТЯЧА ОРТОДОНТІЯ<em>✦</em>ОРТОДОНТІЯ<em>✦</em>ЕСТЕТИКА<em>✦</em>ІМПЛАНТАЦІЯ<em>✦</em>МІКРОСКОП<em>✦</em>ДИТЯЧА ОРТОДОНТІЯ<em>✦</em></div></div>
+  <!-- ================= 4. НАПРЯМИ РОБОТИ КЛІНІКИ ================= -->
+  <section id="napryamy" style="padding-bottom:clamp(64px,8vw,104px)">
+    <div class="wrap">
+      
+      <h2 class="huge-title" style="font-size:clamp(40px,7vw,104px);margin-bottom:60px">
+        Сім напрямів <span class="thin">досконалості</span>
+      </h2>
+
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:56px;align-items:start">
+        
+        <!-- Навігація напрямків -->
+        <div style="border-top:1px solid #DED9CE" id="dirListContainer">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Динамічна картка напрямку з великим фото високої роздільності -->
+        <div class="dark-card" style="min-height:640px;position:relative;overflow:hidden;padding:44px;display:flex;flex-direction:column;justify-content:space-between">
+          
+          <img id="dirHeroImage" alt="Стоматологічний напрям" width="1200" height="800" loading="lazy" decoding="async" 
+               style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.62;object-position:center 30%;transition:opacity .4s ease, transform .6s ease;transform:scale(1.03)"/>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(17,24,26,0.55) 0%, rgba(17,24,26,0.92) 100%)"></div>
+
+          <div style="position:relative;z-index:2">
+            <div class="eyebrow" style="color:#D0B48A" id="dirBadge">01 / Напрям</div>
+            <h3 class="huge-title" id="dirTitle" style="font-size:44px;color:#FFFFFF;margin:12px 0 16px">Ортодонтія</h3>
+            <p id="dirDescription" style="font-size:16px;line-height:1.6;color:#B3C4C1;max-width:440px">
+              Вирівнювання зубного ряду та корекція суглобового положення щелепи.
+            </p>
+          </div>
+
+          <div id="dirServicesGrid" style="position:relative;z-index:2;display:flex;flex-direction:column;gap:12px;margin:32px 0">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div style="position:relative;z-index:2">
+            <a href="#zapys" class="btn gold">Записатися на цей напрям</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /next-section -->
+
+  <!-- ================= PROTOCOL ================= -->
+  <section id="shlyakh" style="padding-bottom:clamp(64px,8vw,104px)"><div class="wrap">
+    
+    <h2 class="huge-title rv" style="font-size:clamp(40px,7vw,104px);margin-bottom:52px">П’ять кроків <span class="thin">до рівної усмішки</span></h2>
+    <div class="dark-card" style="padding:clamp(24px,3.2vw,40px)"><div class="proto">
+      <div id="protoList"></div>
+      <div id="protoPanel" class="glass-d" style="padding:32px;display:flex;flex-direction:column;justify-content:space-between;gap:24px"></div>
+    </div></div>
+  </div></section>
+
+  <!-- ================= 3. РОЗДІЛ: РЕЗУЛЬТАТИ (5 ПОВНОЦІННИХ КЕЙСІВ) ================= -->
+  <section id="rezultaty" style="padding-bottom:clamp(64px,8vw,104px)">
+    <div class="wrap">
+      
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:44px;flex-wrap:wrap;gap:24px">
+        <div>
+          
+          <h2 class="huge-title" style="font-size:clamp(40px,6.5vw,94px)">Різниця, <span class="thin">яку видно</span></h2>
+        </div>
+        <p style="font-size:16px;max-width:420px;color:#495C58">
+          Потягніть повзунок, щоб порівняти зуби до і після лікування.
+        </p>
+      </div>
+
+      <!-- Селектор вибору кейсів -->
+      <div style="display:flex;gap:10px;margin-bottom:36px;flex-wrap:wrap" id="casesBadgesContainer">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Головний інтерактивний блок кейсу -->
+      <div class="dark-card" style="padding:40px;box-shadow:0 30px 70px rgba(17,24,26,0.15)">
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:48px;align-items:center">
+          
+          <!-- Опис активного кейсу -->
+          <div>
+            <div style="display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(208,180,138,0.15);color:#D0B48A;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px" id="caseCategory">
+              Ортодонтія · Елайнери
+            </div>
+            
+            <h3 class="huge-title" id="caseTitle" style="font-size:clamp(28px,3.2vw,44px);color:#FFFFFF;margin-bottom:16px">
+              Усунення глибокої скупченості та звуження щелепи
+            </h3>
+            
+            <p id="caseDiagnosis" style="font-size:15px;line-height:1.65;color:#B3C4C1;margin-bottom:32px">
+              Діагноз: II клас за Енглем, дистальний прикус, нестача місця для бічних різців верхньої щелепи. Лікування проведено без видалення премолярів.
+            </p>
+
+            <!-- Клінічні метрики кейсу (як у референсах City Arcade та Formora) -->
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;border-top:1px solid rgba(255,255,255,0.12);padding-top:24px">
+              <div>
+                <div style="font-size:12px;color:#859995;font-weight:700;text-transform:uppercase">Тривалість</div>
+                <div id="caseDuration" style="font-size:22px;font-weight:800;color:#FFFFFF;margin-top:4px">11 міс.</div>
+              </div>
+              <div>
+                <div style="font-size:12px;color:#859995;font-weight:700;text-transform:uppercase">Апаратура</div>
+                <div id="caseAppliance" style="font-size:22px;font-weight:800;color:#D0B48A;margin-top:4px">24 капи</div>
+              </div>
+              <div>
+                <div style="font-size:12px;color:#859995;font-weight:700;text-transform:uppercase">Візити</div>
+                <div id="caseVisits" style="font-size:22px;font-weight:800;color:#FFFFFF;margin-top:4px">6 разів</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Слайдер До / Після -->
+          <div>
+            <div class="case-slider-wrap" id="caseSliderBox">
+              <!-- ДО лікування -->
+              <div class="case-img-layer" id="caseImgBefore">
+                <span style="position:absolute;left:20px;top:20px;padding:6px 16px;border-radius:999px;background:rgba(17,24,26,0.85);color:#fff;font-size:12px;font-weight:800;letter-spacing:.08em;backdrop-filter:blur(8px)">
+                  ДО ЛІКУВАННЯ
+                </span>
+              </div>
+
+              <!-- ПІСЛЯ лікування (змінний clip-path) -->
+              <div class="case-after-layer" id="caseImgAfter">
+                <span style="position:absolute;right:20px;top:20px;padding:6px 16px;border-radius:999px;background:#D0B48A;color:#11181A;font-size:12px;font-weight:800;letter-spacing:.08em">
+                  ФІНАЛЬНИЙ РЕЗУЛЬТАТ
+                </span>
+              </div>
+
+              <!-- Лінія поділу та ручка -->
+              <div class="case-divider" id="caseDivider">
+                <div class="case-handle">⟷</div>
+              </div>
+            </div>
+
+            <div style="margin-top:20px">
+              <input id="caseRangeInput" type="range" aria-label="Порівняння до і після" min="0" max="100" value="50">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= ЧОМУ SYMMETRIA ================= -->
+  <section id="chomu" style="padding-bottom:clamp(64px,8vw,104px)"><div class="wrap">
+    
+    <h2 class="huge-title rv" style="font-size:clamp(40px,7vw,104px);margin-bottom:52px">Чому <span class="thin">Symmetria</span></h2>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px">
+      <div class="glass" style="padding:36px"><div class="eyebrow" style="color:#D0B48A;margin-bottom:18px">01</div><h3 class="huge-title" style="font-size:28px;margin-bottom:12px">Досвідчені лікарі</h3><p style="font-size:15px;line-height:1.6;color:#495C58">Кожен лікар має понад 10 років практики, регулярно навчається й розповідає про лікування простими словами.</p></div>
+      <div class="glass" style="padding:36px"><div class="eyebrow" style="color:#D0B48A;margin-bottom:18px">02</div><h3 class="huge-title" style="font-size:28px;margin-bottom:12px">Гарантія на роботу</h3><p style="font-size:15px;line-height:1.6;color:#495C58">Даємо письмову гарантію на свою роботу. Якщо в гарантійний термін потрібна корекція, робимо її за рахунок клініки.</p></div>
+      <div class="glass" style="padding:36px"><div class="eyebrow" style="color:#D0B48A;margin-bottom:18px">03</div><h3 class="huge-title" style="font-size:28px;margin-bottom:12px">Сучасне обладнання</h3><p style="font-size:15px;line-height:1.6;color:#495C58">Мікроскопи, цифрові сканери й безпечна рентгенографія: менше неприємних відчуттів і точніший результат.</p></div>
+      <div class="glass" style="padding:36px"><div class="eyebrow" style="color:#D0B48A;margin-bottom:18px">04</div><h3 class="huge-title" style="font-size:28px;margin-bottom:12px">Турбота без поспіху</h3><p style="font-size:15px;line-height:1.6;color:#495C58">Приймаємо за записом, без черг, а на кожного пацієнта виділяємо стільки часу, скільки потрібно.</p></div>
+    </div>
+  </div></section>
+
+  <!-- ================= SPACES ================= -->
+  <section id="prostir" style="padding-bottom:clamp(64px,8vw,104px)"><div class="wrap">
+    
+    <h2 class="huge-title rv" style="font-size:clamp(40px,7vw,104px);margin-bottom:48px">Простір, <span class="thin">де зникає тривога</span></h2>
+    <div class="sp" id="spaces"></div>
+  </div></section>
+
+  <!-- ================= TESTIMONIALS ================= -->
+  <section id="vidhuky" style="padding-bottom:clamp(64px,8vw,104px)"><div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:40px">
+      <div><h2 class="huge-title rv" style="font-size:clamp(40px,7vw,104px)">Відгуки <span class="thin">пацієнтів</span></h2></div>
+      <div style="display:flex;gap:10px"><button class="arrow" onclick="tScroll(-1)" aria-label="Назад">←</button><button class="arrow" onclick="tScroll(1)" aria-label="Далі">→</button></div>
+    </div>
+    <div class="tscroll" id="tscroll"></div>
+  </div></section>
+
+  <!-- ================= 5. ПРОЗОРІ ТАРИФИ ТА КАЛЬКУЛЯТОР ================= -->
+  <section id="tsiny" style="padding-bottom:clamp(64px,8vw,104px)">
+    <div class="wrap">
+      
+      <h2 class="huge-title" style="font-size:clamp(40px,7vw,104px);margin-bottom:52px">
+        Орієнтовний розрахунок <span class="thin">вартості</span>
+      </h2>
+
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:28px">
+        
+        <div class="glass" style="padding:40px">
+          <div class="eyebrow" style="margin-bottom:16px">Оберіть послугу</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px" id="calcServicesWrap">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div class="eyebrow" style="margin:36px 0 16px">Складність вашого випадку</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px" id="calcLevelsWrap">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="dark-card" style="padding:44px;display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div class="eyebrow" style="color:#D0B48A">Повний кошторис під ключ</div>
+            <div class="huge-title" id="calcPriceDisplay" style="font-size:clamp(44px,6vw,80px);color:#FFFFFF;margin:18px 0 10px">
+              від 70 000 ₴
+            </div>
+            <div id="calcTermDisplay" style="font-size:15px;line-height:1.6;color:#B3C4C1">
+              Тривалість: 6–18 місяців. У вартість включено 3D-діагностику, всі сетапи, капи та контрольні візити.
+            </div>
+          </div>
+
+          <a href="#zapys" class="btn gold" style="align-self:flex-start">
+            Зафіксувати ціну в договорі
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 6. ПИТАННЯ (FAQ) ================= -->
+  <section id="faq" class="wrap" style="padding-bottom:clamp(64px,8vw,104px)">
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:56px">
+      <div>
+        
+        <h2 class="huge-title" style="font-size:clamp(40px,6.5vw,94px)">
+          Чого <span class="thin">ви боїтеся?</span>
+        </h2><div class="chip-row" id="faqChips"></div>
+      </div>
+
+      <div style="border-top:1px solid #DED9CE" id="faqAccordion">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 7. ФОРМА ЗАПИСУ ================= -->
+  <section id="zapys" class="wrap" style="padding-bottom:80px">
+    <div class="dark-card" style="padding:60px 48px;position:relative;overflow:hidden">
+      
+      <!-- Фонове інтер'єрне фото високого класу -->
+      <img 
+        src="images/img-03.jpg" 
+        alt="Інтер’єр клініки Symmetria: світла зона очікування" width="1400" height="1876" loading="lazy" decoding="async"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.25;filter:grayscale(1)"
+      />
+
+      <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:40px">
+        <div style="max-width:580px">
+          <div class="eyebrow" style="color:#D0B48A;margin-bottom:14px">[ Start Today ]</div>
+          <h2 class="huge-title" style="font-size:clamp(40px,7vw,96px);color:#FFFFFF">
+            Перший крок <span class="thin">найлегший</span>
+          </h2>
+          <p style="font-size:16px;line-height:1.6;color:#B3C4C1;margin-top:20px">
+            Пройдіть оптичне 3D-сканування зубів та отримайте комп’ютерну симуляцію результату без будь-яких зобов’язань.
+          </p>
+        </div>
+
+        <div class="glass" style="padding:36px;width:420px;max-width:100%">
+          <!-- TODO: форма зараз лише показує підтвердження і НЕ надсилає дані. Підключити обробник (Formspree / Google Forms / власний бекенд) і вказати action -->
+          <form id="appointmentForm" method="post" action="#" onsubmit="handleFormSubmit(event)">
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <div>
+                <label for="fName" style="display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px 8px;color:#11181A">Ваше ім’я</label>
+                <input id="fName" name="name" type="text" autocomplete="given-name" placeholder="Вікторія" required>
+              </div>
+              <div>
+                <label for="fPhone" style="display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px 8px;color:#11181A">Номер телефону</label>
+                <input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+380 97 000 00 00" required>
+              </div>
+              <label class="consent"><input type="checkbox" name="consent" required><span>Погоджуюсь на обробку персональних даних відповідно до <a href="#" data-legal="privacy">Політики конфіденційності</a></span></label>
+              <button type="submit" class="btn dark ripple wave" style="width:100%;margin-top:6px">
+                Забронювати візит
+              </button>
+              <div style="font-size:11px;line-height:1.5;color:#576865;text-align:center">
+                Зв’яжемося протягом 10 хвилин.
+              </div>
+            </div>
+          </form>
+
+          <div id="formSuccess" style="display:none;padding:24px 0;text-align:center">
+            <div class="huge-title" style="font-size:32px">Дякуємо!</div>
+            <p style="font-size:15px;line-height:1.5;margin-top:12px;color:#3F504D">
+              Ваш візит зафіксовано. Координатор клініки вже готує розклад для вашого візиту.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= 8. FOOTER ================= -->
+  <footer class="ft" id="footer">
+    <div class="ft-axis" id="ftAxis" aria-hidden="true"></div>
+    <div class="ft-inner">
+      <p class="ft-tag" id="ftTag">Усмішка починається з порядку</p>
+      <div class="ft-wordwrap">
+        <div class="ft-word" id="ftWord" aria-label="Symmetria"><span>S</span><span>y</span><span>m</span><span>m</span><span>e</span><span>t</span><span>r</span><span>i</span><span>a</span><span class="ft-dot">.</span></div>
+        <div class="ft-word ft-refl" id="ftRefl" aria-hidden="true"><span>S</span><span>y</span><span>m</span><span>m</span><span>e</span><span>t</span><span>r</span><span>i</span><span>a</span><span class="ft-dot">.</span></div>
+      </div>
+      <div class="ft-cols">
+        <div class="ft-col ft-l">
+          <b>Адреса</b><span>Київ, вул. Архітектора Городецького, 11-Б</span>
+          <b>Телефон</b><a href="tel:+380443338899">+380 (44) 333-88-99</a>
+        </div>
+        <a href="#zapys" class="btn gold ft-cta">Записатися</a>
+        <div class="ft-col ft-r">
+          <b>Пошта</b><a href="mailto:hello@symmetria.ua">hello@symmetria.ua</a>
+          <b>Соцмережі</b><span><a href="https://instagram.com/symmetria.clinic" target="_blank" rel="noopener noreferrer">Instagram</a> · <a href="https://t.me/symmetria_clinic" target="_blank" rel="noopener noreferrer">Telegram</a><!-- TODO: підставити реальний акаунт --></span>
+        </div>
+      </div>
+      <div class="ft-bot"><span>Пн–Сб 09:00–21:00 · Нд за попереднім записом</span>
+        <nav class="ft-legal"><a href="#" data-legal="privacy">Політика конфіденційності</a><a href="#" data-legal="terms">Умови користування</a><a href="#" data-legal="req">Реквізити та ліцензія</a></nav>
+        <span>© 2026 Symmetria. Усі права захищені.</span></div>
+      <p class="ft-med">ТОВ «Симетрія Клінік» · ЄДРПОУ 00000000 · Ліцензія МОЗ України на медичну практику № 000 від 00.00.2026 (демо-дані). Є протипоказання. Необхідна консультація лікаря.</p>
+    </div>
+    <i class="ft-mdot" id="ftMdot"></i>
+  </footer>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // --- 1. ПОВНОЦІННІ КЛІНІЧНІ КЕЙСИ (5 РЕАЛЬНИХ СИТУАЦІЙ) ---
+    const CI = {"p1": "images/img-04.jpg", "p2": "images/img-05.jpg", "p3": "images/img-06.jpg", "p4": "images/img-07.jpg", "p8": "images/img-08.jpg", "p9": "images/img-09.jpg", "p10": "images/img-10.jpg", "p11": "images/img-11.jpg", "p12": "images/img-12.jpg", "p13": "images/img-13.jpg", "p14": "images/img-14.jpg", "p15": "images/img-15.jpg", "ct_do": "images/img-16.jpg", "ct_po": "images/img-17.jpg", "cb_do": "images/img-18.jpg", "cb_po": "images/img-19.jpg", "kid_do": "images/img-20.jpg", "kid_po": "images/img-21.jpg", "per_do": "images/img-22.jpg", "per_po": "images/img-23.jpg"};
+    const clinicalCases = [
+ {badge:"01 / Елайнери",category:"Ортодонтія · Прозорі капи",title:"Тісні та нерівні передні зуби",problem:"Передні зуби стояли тісно, один виступав уперед, а інші були розвернуті. Через це усмішка виглядала нерівною.",done:"Виправили положення зубів прозорими знімними капами без видалення зубів. Кожні кілька тижнів пацієнт змінював кап на наступний, і зуби поступово зсувалися на свої місця.",result:"Зуби стоять рівно, усмішка стала гармонійною, а під час лікування капи майже не були помітні для оточення.",duration:"11 міс.",appliance:"22 капи",visits:"6 візитів",shotB:'До',shotA:'Після',imgBefore:CI.ct_do,imgAfter:CI.ct_po},
+ {badge:"02 / Брекети",category:"Ортодонтія · Брекети",title:"Виступаючий зуб і тісно розташовані зуби",problem:"Один зуб ріс вище за інші та виступав уперед, а зуби в ряду стояли дуже тісно. Через це усмішка була нерівною, а прикус неправильним.",done:"Встановили брекети й за кілька місяців поступово вирівнювали ряд: на кожному візиті лікар змінював дугу й контролював рух зубів.",result:"Зуби стоять рівно, а прикус став правильним. Усмішка виглядає охайно й симетрично.",duration:"16 міс.",appliance:"Брекети",visits:"11 візитів",shotB:'До',shotA:'Після',imgBefore:CI.p9,imgAfter:CI.p8},
+ {badge:"03 / Вініри",category:"Естетична стоматологія · Вініри та ясна",title:"Щілина між передніми зубами",problem:"Між двома передніми зубами була помітна щілина, через яку пацієнт соромився усміхатися.",done:"Виготовили керамічні вініри (тонкі накладки на передні зуби) і підігнали їхню форму й колір до решти зубів. Також акуратно відкоригували лінію ясен, щоб усмішка виглядала пропорційно.",result:"Щілини більше немає. Передні зуби виглядають цілісно, а усмішка стала рівнішою й природнішою.",duration:"2–3 тижні",appliance:"Вініри + корекція ясен",visits:"3 візити",shotB:'До',shotA:'Після',imgBefore:CI.p15,imgAfter:CI.p14},
+ {badge:"04 / Відновлення",category:"Терапія та естетика · Комплексна робота",title:"Потемнілі зуби з наліттям і карієсом",problem:"Зуби сильно потемніли, на них накопичилися наліт і зубний камінь, а на частині зубів з’явився карієс. Простим відбілюванням такий стан виправити не можна.",done:"Спочатку провели професійну чистку та вилікували уражені зуби. Далі відновили їхню форму й колір естетичними матеріалами, а потім підібрали світлий природний відтінок.",result:"Зуби знову рівні, чисті та світлі. Колір виглядає чистим і природним, як у здорових світлих зубів.",duration:"1–1,5 міс.",appliance:"Лікування + естетична реставрація",visits:"5 візитів",shotB:'До',shotA:'Після',imgBefore:CI.p11,imgAfter:CI.p10},
+ {badge:"05 / Імплантація",category:"Імплантація",title:"Відсутній зуб у передньому ряду",problem:"Не вистачало одного зуба, і в усмішці було видно проміжок.",done:"Встановили імплантат, який замінює корінь зуба, і зробили на нього керамічну коронку, схожу на ваші зуби. Операцію планували заздалегідь на комп’ютері.",result:"Ряд зубів знову повний, а коронка не відрізняється від сусідніх зубів.",duration:"4 міс.",appliance:"Імплантат + коронка",visits:"4 візити",shotB:'До',shotA:'Після',imgBefore:CI.p3,imgAfter:CI.p4},
+ {badge:"06 / Дитяча",category:"Дитяча ортодонтія",title:"Зуби дитини ростуть тісно та криво",problem:"У дитини змінювалися зуби: передній зуб ріс криво, а для решти зубів у щелепі не вистачало місця.",done:"Лікар вчасно почав м’яке лікування: допомагав щелепі правильно рости та створював місце для нових зубів. Візити проходили спокійно, у форматі знайомства.",result:"Зуби стали рівнішими, а в дитини зник страх перед візитом до стоматолога.",duration:"9 міс.",appliance:"М’яке лікування + нагляд",visits:"7 візитів",shotB:'До',shotA:'Після',imgBefore:CI.kid_do,imgAfter:CI.kid_po},
+ {badge:"07 / Реставрація",category:"Лікування зубів під мікроскопом",title:"Відколоті краї передніх зубів",problem:"Краї передніх зубів були відколоті й нерівні, через що усмішка виглядала зношеною.",done:"Відновили форму зубів спеціальним матеріалом, який твердне під світлом. Роботу виконали під мікроскопом, тому вона вийшла дуже точною.",result:"Зуби знову мають рівну форму й природний блиск, і для цього не знадобилися вініри.",duration:"1 візит",appliance:"Реставрація",visits:"1 візит",shotB:'До',shotA:'Після',imgBefore:CI.p13,imgAfter:CI.p12},
+ {badge:"08 / Пародонт",category:"Профілактика та пародонт",title:"Запалені ясна і наліт на зубах",problem:"Ясна були набряклі й кровили, а біля їхнього краю накопичилися наліт і зубний камінь.",done:"Зробили професійну чистку, прибрали наліт і камінь, показали, як правильно чистити зуби вдома.",result:"Ясна стали здоровими й перестали кровити, а зуби чистіші.",duration:"2 тижні",appliance:"Чистка + догляд",visits:"3 візити",shotB:'До',shotA:'Після',imgBefore:CI.per_do,imgAfter:CI.per_po},
+];
+ const PH = {};
+ 
+  let currentCaseIdx = 0;
+  function setBg(id, url, label){
+    const el=document.getElementById(id); el.style.backgroundImage='none'; el.classList.add('noimg');
+    let n=el.querySelector('.nf'); if(!n){n=document.createElement('div');n.className='nf';n.style.cssText='position:absolute;left:20px;bottom:18px;max-width:70%;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#C9D4D1;text-shadow:0 1px 6px rgba(0,0,0,.5)';el.appendChild(n);} n.textContent=label||'';
+    const im=new Image(); im.onload=()=>{el.style.backgroundImage="url('"+url+"')";el.classList.remove('noimg');n.style.display='none'}; im.onerror=()=>{n.style.display='block'}; im.src=url;
+  }
+
+    function renderCasesBadges() {
+      const container = document.getElementById('casesBadgesContainer');
+      container.innerHTML = '';
+      clinicalCases.forEach((c, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `case-badge-btn ${idx === currentCaseIdx ? 'active' : ''}`;
+        btn.textContent = c.badge;
+        btn.onclick = () => {
+          currentCaseIdx = idx;
+          updateCaseView();
+          renderCasesBadges();
+        };
+        container.appendChild(btn);
+      });
+      updateCaseView();
+    }
+
+    function updateCaseView() {
+      const c = clinicalCases[currentCaseIdx];
+      document.getElementById('caseCategory').textContent = c.category;
+      document.getElementById('caseTitle').textContent = c.title;
+      document.getElementById('caseDiagnosis').innerHTML = '<b style="color:#D0B48A">Проблема.</b> '+c.problem+'<br><br><b style="color:#D0B48A">Що зробили.</b> '+c.done+'<br><br><b style="color:#D0B48A">Результат.</b> '+c.result;
+      document.getElementById('caseDuration').textContent = c.duration;
+      document.getElementById('caseAppliance').textContent = c.appliance;
+      document.getElementById('caseVisits').textContent = c.visits;
+
+      document.getElementById('caseImgBefore').style.backgroundImage = `url('${c.imgBefore}')`;
+      document.getElementById('caseImgAfter').style.backgroundImage = `url('${c.imgAfter}')`;
+
+      // Скидання повзунка на 50%
+      document.getElementById('caseRangeInput').value = 50;
+      document.getElementById('caseImgAfter').style.clipPath = 'inset(0 0 0 50%)';
+      document.getElementById('caseDivider').style.left = '50%';
+    }
+
+    // Слухач повзунка До/Після
+    document.getElementById('caseRangeInput').addEventListener('input', (e) => {
+      const val = e.target.value;
+      document.getElementById('caseImgAfter').style.clipPath = `inset(0 0 0 ${val}%)`;
+      document.getElementById('caseDivider').style.left = `${val}%`;
+    });
+
+    // --- 2. НАПРЯМИ ДІЯЛЬНОСТІ ---
+    const directionsList = [
+      {
+        name: 'Ортодонтія',
+        hero: 'images/img-24.jpg',
+        desc: "Вирівнюємо зуби й налагоджуємо прикус. Ви наперед бачите, як зміняться ваші зуби, і самі обираєте: прозорі капи чи брекети.",
+        services: [
+          "Прозорі капи (елайнери), майже непомітні",
+          "Брекети: металеві, керамічні або сапфірові",
+          "Підготовка зубів до вінірів чи імплантації"
+        ]
+      },
+      {
+        name: 'Естетична стоматологія',
+        hero: 'images/img-25.jpg',
+        desc: "Робимо усмішку красивою й природною: підбираємо форму, розмір і колір зубів так, щоб вони пасували саме вам.",
+        services: [
+          "Тонкі керамічні вініри (накладки на зуби)",
+          "Професійне відбілювання",
+          "Попередній макет усмішки на комп’ютері"
+        ]
+      },
+      {
+        name: 'Терапія під мікроскопом',
+        hero: 'images/img-26.jpg',
+        desc: "Лікуємо зуби під мікроскопом: так лікар бачить усі дрібниці й залишає якомога більше вашого власного зуба.",
+        services: [
+          "Лікування каналів, зокрема повторне",
+          "Керамічні вставки замість великих пломб",
+          "Збереження зубів із запаленням біля кореня"
+        ]
+      },
+      {
+        name: 'Цифрова імплантація',
+        hero: 'images/img-27.jpg',
+        desc: "Замінюємо втрачені зуби імплантатами. Операцію наперед планують на комп’ютері, тому вона проходить точно й швидко.",
+        services: [
+          "Імплантати відомих європейських виробників",
+          "Видалення зуба з максимальним збереженням кістки",
+          "Нарощування кістки й корекція ясен"
+        ]
+      },
+      {
+        name: 'Ортопедична стоматологія',
+        hero: 'images/img-28.jpg',
+        desc: "Відновлюємо зуби коронками, містками та протезами, щоб ви знову могли комфортно жувати й посміхатися.",
+        services: [
+          "Міцні коронки з кераміки та цирконію",
+          "Повний ряд зубів на кількох імплантатах (All-on-4 / All-on-6)",
+          "Керамічні мости на місце відсутніх зубів"
+        ]
+      },
+      {
+        name: 'Профілактика та пародонт',
+        hero: 'images/img-29.jpg',
+        desc: "Бережемо ясна та зуби: м’яко прибираємо наліт і камінь, лікуємо запалення ясен і навчаємо правильно доглядати вдома.",
+        services: [
+          "Професійна чистка з порошком і водою (Air Flow)",
+          "Ультразвукове видалення зубного каменю",
+          "Лікування запалення ясен та кровоточивості"
+        ]
+      },
+      {
+        name: 'Дитяча ортодонтія',
+        hero: 'images/img-30.jpg',
+        desc: "Слідкуємо, як ростуть зуби й щелепи дитини, і вчасно виправляємо проблеми. Без сліз і страху: перші візити проходять у грі.",
+        services: [
+          "М’які капи й тренажери для правильного росту щелепи",
+          "Ознайомчі візити в ігровій формі",
+          "Захисне покриття для зубів проти карієсу"
+        ]
+      }
+    ];
+
+    let currentDirIdx = 0;
+
+    function renderDirections() {
+      const container = document.getElementById('dirListContainer');
+      container.innerHTML = '';
+      directionsList.forEach((d, idx) => {
+        const btn = document.createElement('button');
+        const isActive = idx === currentDirIdx;
+        btn.className = `dir-nav-btn ${isActive ? 'active' : ''}`;
+        btn.innerHTML = `
+          <span class="dir-idx" style="font-size:12px;font-weight:800;color:${isActive ? '#D0B48A' : '#7D8D89'}">0${idx + 1}</span>
+          <span class="dir-name huge-title" style="font-size:clamp(24px,2.8vw,40px);color:${isActive ? '#11181A' : '#A29E93'}">${d.name}</span>
+        `;
+        btn.onclick = () => {
+          currentDirIdx = idx;
+          updateDirectionCard();
+          renderDirections();
+        };
+        container.appendChild(btn);
+      });
+      updateDirectionCard();
+    }
+
+    function updateDirectionCard() {
+      const d = directionsList[currentDirIdx];
+      document.getElementById('dirBadge').textContent = `0${currentDirIdx + 1} / Спеціалізація`;
+      document.getElementById('dirTitle').textContent = d.name;
+      document.getElementById('dirDescription').textContent = d.desc;
+      document.getElementById('dirHeroImage').src = d.hero;
+      document.getElementById('dirHeroImage').alt = d.name;
+
+      const servicesWrap = document.getElementById('dirServicesGrid');
+      servicesWrap.innerHTML = '';
+      d.services.forEach(s => {
+        const item = document.createElement('div');
+        item.style.cssText = 'padding:14px 18px;border-radius:14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#FFFFFF;font-size:14px;font-weight:600';
+        item.textContent = s;
+        servicesWrap.appendChild(item);
+      });
+    }
+
+    // --- 3. ЦІНОВИЙ РОЗРАХУНОК ---
+    const calcServices = [
+      { name: 'Елайнери', base: 70000, term: '6–18 місяців. У вартість включено 3D-план, весь набір кап та ретейнери.' },
+      { name: 'Брекети', base: 36000, term: '12–24 місяці. Фіксація системи, заміна дуг та ортодонтичний нагляд.' },
+      { name: 'Керамічні вініри', base: 90000, term: '2–3 візити (7–10 днів). Ідеальна форма й природний колір, схожий на живі зуби.' },
+      { name: 'Імплантація Straumann', base: 26500, term: '1 день встановлення + близько 3 місяців, поки імплант приживається.' },
+      { name: 'Професійна гігієна', base: 2200, term: '1 візит (близько 60 хвилин). Видаляємо наліт і камінь, шліфуємо й полірюємо зуби.' }
+    ];
+    const calcLevels = [
+      { name: 'Легкий', mult: 1 },
+      { name: 'Середній', mult: 1.3 },
+      { name: 'Складний', mult: 1.65 }
+    ];
+
+    let calcSelectedSvc = 0;
+    let calcSelectedLvl = 0;
+
+    let shownPrice = 0;
+  function tweenPrice(to){
+    const el=document.getElementById('calcPriceDisplay'), from=shownPrice, t0=performance.now();
+    const f=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+    (function step(t){const k=Math.min(1,(t-t0)/600),e=1-Math.pow(1-k,3);el.textContent='від '+f(from+(to-from)*e)+' ₴';if(k<1)requestAnimationFrame(step);else shownPrice=to;})(t0);
+  }
+  function renderCalculator() {
+      const svcWrap = document.getElementById('calcServicesWrap');
+      svcWrap.innerHTML = '';
+      calcServices.forEach((s, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `case-badge-btn ${idx === calcSelectedSvc ? 'active' : ''}`;
+        btn.textContent = s.name;
+        btn.onclick = () => {
+          calcSelectedSvc = idx;
+          renderCalculator();
+        };
+        svcWrap.appendChild(btn);
+      });
+
+      const lvlWrap = document.getElementById('calcLevelsWrap');
+      lvlWrap.innerHTML = '';
+      calcLevels.forEach((l, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `case-badge-btn ${idx === calcSelectedLvl ? 'active' : ''}`;
+        btn.textContent = l.name;
+        btn.onclick = () => {
+          calcSelectedLvl = idx;
+          renderCalculator();
+        };
+        lvlWrap.appendChild(btn);
+      });
+
+      const price = Math.round((calcServices[calcSelectedSvc].base * calcLevels[calcSelectedLvl].mult) / 500) * 500;
+      const fmt = String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      tweenPrice(price);
+      document.getElementById('calcTermDisplay').textContent = calcServices[calcSelectedSvc].term;
+    }
+
+    // --- 4. FAQ ---
+  const faqData = [
+   {c:'Ортодонтія',q:'Чи боляче встановлювати та носити брекети чи елайнери?',a:'Сама процедура безболісна. Перші 3–4 дні після встановлення або заміни капи можливе відчуття помірного тиску. Це нормальний сигнал, що зуби починають рухатися.'},
+   {c:'Ортодонтія',q:'Чи можна вирівнювати зуби у 30, 40 чи 50 років?',a:'Так. Зуби можуть рухатися в будь-якому віці, якщо ясна та кістка навколо зубів здорові. Значна частина наших ортодонтичних пацієнтів дорослі.'},
+   {c:'Ортодонтія',q:'Елайнери чи брекети: що обрати?',a:'Залежить від складності випадку. На консультації ми показуємо симуляцію обох варіантів і пояснюємо, де кожен метод ефективніший.'},
+   {c:'Ортодонтія',q:'Чи потрібно видаляти зуби перед лікуванням?',a:'Не завжди. Ми прагнемо до лікування без видалення і приймаємо рішення лише після 3D-діагностики.'},
+   {c:'Ортодонтія',q:'Що буде після зняття брекетів?',a:'Ми встановлюємо ретейнери (тонку дужку або капу), які утримують результат. Без ретенції зуби можуть повертатися на старі місця.'},
+   {c:'Вартість',q:'Чому вартість не змінюється під час лікування?',a:'Ми складаємо точний цифровий план. Усі етапи, матеріали, капи та планові огляди фіксуються в договорі до початку.'},
+   {c:'Вартість',q:'Чи є розстрочка?',a:'Так, оплату можна розділити на етапи лікування. Умови ми обговорюємо після діагностики, без тиску.'},
+   {c:'Вартість',q:'Що входить у вартість консультації?',a:'Огляд, 3D-скан, симуляція результату та орієнтовний план лікування з термінами й вартістю.'},
+   {c:'Страхи',q:'Що робити, якщо я дуже боюся стоматолога?',a:'Скажіть про це на початку. Ми працюємо без поспіху, використовуємо комп’ютерну анестезію і зупиняємося за першим вашим жестом.'},
+   {c:'Страхи',q:'Скільки триває лікування?',a:'Елайнерами зазвичай 6–18 місяців, брекетами 12–24. Точніший термін ви дізнаєтесь після 3D-діагностики.'},
+   {c:'Дітям',q:'З якого віку приводити дитину до ортодонта?',a:'Перший огляд рекомендуємо у 6–7 років. Рання корекція часто допомагає уникнути складного лікування пізніше.'},
+   {c:'Дітям',q:'Як ви працюєте з дітьми, які бояться?',a:'Перший візит без лікування: дитина знайомиться з кабінетом та інструментами в ігровій формі. Батьки завжди поруч.'}
+  ];
+  const faqCats = ['Усі','Ортодонтія','Вартість','Страхи','Дітям'];
+  let faqCat = 'Усі', currentOpenFaq = 0;
+
+  function renderFaq() {
+    const chips = document.getElementById('faqChips');
+    chips.innerHTML = '';
+    faqCats.forEach(c => {
+      const b = document.createElement('button');
+      b.className = 'case-badge-btn' + (c === faqCat ? ' active' : '');
+      b.textContent = c;
+      b.onclick = () => { faqCat = c; currentOpenFaq = 0; renderFaq(); };
+      chips.appendChild(b);
+    });
+    const container = document.getElementById('faqAccordion');
+    container.innerHTML = '';
+    faqData.filter(f => faqCat === 'Усі' || f.c === faqCat).forEach((f, idx) => {
+      const item = document.createElement('div');
+      item.style.borderBottom = '1px solid #DED9CE';
+      const isOpen = idx === currentOpenFaq;
+      item.innerHTML = `
+        <button style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:24px 0;text-align:left;font-size:clamp(17px,2vw,20px);font-weight:700;letter-spacing:-.02em;color:#11181A">
+          <span style="padding-right:20px">${f.q}</span>
+          <span class="fq-i" style="font-size:28px;font-weight:300;min-width:24px;text-align:center;color:#D0B48A;line-height:1;transition:transform .4s cubic-bezier(.16,1,.3,1);transform:rotate(${isOpen?45:0}deg)">+</span>
+        </button>
+        <div class="fq-b" style="display:grid;grid-template-rows:${isOpen ? '1fr' : '0fr'};transition:grid-template-rows .45s cubic-bezier(.16,1,.3,1)"><div style="overflow:hidden"><p style="padding-bottom:24px;font-size:16px;line-height:1.65;color:#495C58;max-width:580px">${f.a}</p></div></div>`;
+      item.querySelector('button').onclick = () => {
+        const was = item.dataset.open === '1';
+        [...container.children].forEach(it => { it.dataset.open = '0'; it.querySelector('.fq-b').style.gridTemplateRows = '0fr'; it.querySelector('.fq-i').style.transform = 'rotate(0deg)'; });
+        if (!was) { item.dataset.open = '1'; item.querySelector('.fq-b').style.gridTemplateRows = '1fr'; item.querySelector('.fq-i').style.transform = 'rotate(45deg)'; currentOpenFaq = idx; } else currentOpenFaq = -1;
+      };
+      item.dataset.open = isOpen ? '1' : '0';
+      container.appendChild(item);
+    });
+  }
+
+  // --- 5. ФОРМА ЗАПИСУ ---
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      document.getElementById('appointmentForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }
+
+    // Ініціалізація
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCasesBadges();
+      renderDirections();
+      renderCalculator();
+      renderFaq();
+    });
+  </script>
+
+
+  <script>
+  // --- Mobile menu & sticky bar ---
+  function toggleMenu(){ document.getElementById('mmenu').classList.toggle('open'); }
+  (function(){
+    const s=document.getElementById('sticky'), h=document.getElementById('hero');
+    const nxt=document.getElementById('next-section'), ind=document.getElementById('navInd'), tt=document.getElementById('toTop');
+    const links=[...s.querySelectorAll('a.sl')];
+    const spy=[['napryamy','#napryamy'],['shlyakh','#shlyakh'],['rezultaty','#rezultaty'],['vidhuky','#vidhuky'],['tsiny','#tsiny'],['faq','#faq']];
+    const DARK='.dark-card,.hero-scroll,#zapys .dark-card';
+    let tick=false,lastAct='';
+    function upd(){
+      tick=false;
+      const t=nxt.getBoundingClientRect().top, vh=window.innerHeight;
+      const fe=document.getElementById('footer'), ft_=fe?fe.getBoundingClientRect().top:1e9;
+      s.classList.toggle('show', t<=64 && ft_>vh*0.4);
+      h.classList.toggle('hide-top', t<=140);
+      tt.classList.toggle('show', window.scrollY>300 && t<=vh*0.5);
+      if(t<=64){
+        const W=window.innerWidth, xs=[W/2-160,W/2,W/2+160];
+        let dark=0;
+        xs.forEach(x=>{const el=document.elementsFromPoint(x,40).find(e=>!s.contains(e)&&!e.classList.contains('totop'));if(el&&el.closest(DARK))dark++});
+        s.classList.toggle('on-light',dark<2);
+      }
+      let act='';
+      for(const [id,href] of spy){const r=document.getElementById(id).getBoundingClientRect();if(r.top<=vh*0.4&&r.bottom>vh*0.4)act=href}
+      if(act!==lastAct){lastAct=act;
+        links.forEach(l=>{const on=l.getAttribute('href')===act;l.classList.toggle('active',on);if(on){l.setAttribute('aria-current','true');ind.style.left=(l.offsetLeft+l.offsetWidth/2-12)+'px';ind.style.width='24px'}else l.removeAttribute('aria-current')});
+        ind.style.opacity=act?'1':'0';
+      }
+    }
+    const req=()=>{if(!tick){tick=true;requestAnimationFrame(upd)}};
+    window.addEventListener('scroll',req,{passive:true});window.addEventListener('resize',()=>{lastAct='';req()});upd();
+    tt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  })();
+
+
+  // --- Magnetic buttons + ripple ---
+  (function(){
+    if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+      const els=[...document.querySelectorAll('.btn:not(.ripple):not(.wave)')];
+      const st=new WeakMap();
+      const cfg=el=>el.closest('.hero-top')?{k:.3,max:60,r:80}:{k:.12,max:5,r:40};
+      window.addEventListener('mousemove',e=>{
+        els.forEach(el=>{
+          const r=el.getBoundingClientRect(); if(!r.width)return;
+          const c=cfg(el), cx=r.left+r.width/2, cy=r.top+r.height/2;
+          const dx=Math.max(r.left-e.clientX,0,e.clientX-r.right), dy=Math.max(r.top-e.clientY,0,e.clientY-r.bottom);
+          if(Math.hypot(dx,dy)<c.r){
+            const m=v=>Math.max(-c.max,Math.min(c.max,v*c.k)).toFixed(1);
+            el.style.transition='transform .25s cubic-bezier(.16,1,.3,1),background .3s,box-shadow .3s';el.style.transform='translate('+m(e.clientX-cx)+'px,'+m(e.clientY-cy)+'px)';st.set(el,1)}
+          else if(st.get(el)){el.style.transition='transform .6s cubic-bezier(.16,1,.3,1),background .3s,box-shadow .3s';el.style.transform='';st.set(el,0)}
+        });
+      },{passive:true});
+      document.addEventListener('mouseleave',()=>els.forEach(el=>{el.style.transform=''}));
+    }
+    document.querySelectorAll('.btn.wave').forEach(b=>{
+      let pos={x:0,y:0},timer=0;
+      const spawn=()=>{
+        const r=b.getBoundingClientRect(), D=110;
+        const dot=document.createElement('span');dot.className='wave-dot';
+        dot.style.cssText='width:'+D+'px;height:'+D+'px;left:'+(pos.x-r.left-D/2)+'px;top:'+(pos.y-r.top-D/2)+'px';
+        b.appendChild(dot);dot.addEventListener('animationend',()=>dot.remove());
+      };
+      b.addEventListener('mouseenter',e=>{pos={x:e.clientX,y:e.clientY};spawn();clearInterval(timer);timer=setInterval(spawn,900)});
+      b.addEventListener('mousemove',e=>{pos={x:e.clientX,y:e.clientY}});
+      b.addEventListener('mouseleave',()=>{clearInterval(timer);timer=0});
+    });
+    document.querySelectorAll('.btn.ripple').forEach(b=>b.addEventListener('click',e=>{
+      const r=b.getBoundingClientRect(), d=Math.max(r.width,r.height)/2;
+      const dot=document.createElement('span');dot.className='ripple-dot';
+      dot.style.cssText='width:'+d+'px;height:'+d+'px;left:'+(e.clientX-r.left-d/2)+'px;top:'+(e.clientY-r.top-d/2)+'px';
+      b.appendChild(dot);dot.addEventListener('animationend',()=>dot.remove());
+    }));
+  })();
+
+  // --- Hero tooth: 3D tilt on pointer move ---
+  (function(){
+    const hero=document.getElementById('hero'), t=document.getElementById('heroTooth');
+    hero.addEventListener('pointermove',e=>{
+      if(window.innerWidth<961) return;
+      const r=hero.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      t.style.setProperty('--ry',(x*16)+'deg'); t.style.setProperty('--rx',(-y*10)+'deg');
+    });
+    hero.addEventListener('pointerleave',()=>{t.style.setProperty('--ry','0deg');t.style.setProperty('--rx','0deg')});
+  })();
+
+  // --- Counters & reveal on scroll ---
+  function runCount(el){
+    const to=parseFloat(el.dataset.count), dec=+(el.dataset.dec||0), suf=el.dataset.suf||'', sep=el.dataset.sep, t0=performance.now();
+    (function step(t){const k=Math.min(1,(t-t0)/1600),e=1-Math.pow(1-k,3);let v=(to*e).toFixed(dec);
+      if(sep) v=String(Math.round(to*e)).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+      el.textContent=v+suf; if(k<1) requestAnimationFrame(step);})(t0);
+  }
+  (function(){
+    document.querySelectorAll('section h2,section .eyebrow,section .dark-card,.sp,.tcard,#faq .grid>div').forEach(e=>{if(!e.classList.contains('rv')&&!e.closest('#hero'))e.classList.add('rv')});
+    const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
+    document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+    const cio=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){runCount(x.target);cio.unobserve(x.target)}}),{threshold:.5});
+    document.querySelectorAll('[data-count]').forEach(e=>cio.observe(e));
+    setTimeout(()=>document.querySelectorAll('.rv').forEach(e=>e.classList.add('in')),4000);
+  })();
+
+  // --- Before/after: drag anywhere + intro nudge ---
+  (function(){
+    const box=document.getElementById('caseSliderBox'), rng=document.getElementById('caseRangeInput');
+    const set=v=>{rng.value=v;rng.dispatchEvent(new Event('input'))};
+    let drag=false;
+    const mv=e=>{const r=box.getBoundingClientRect();set(Math.max(0,Math.min(100,((e.clientX-r.left)/r.width)*100)))};
+    box.addEventListener('pointerdown',e=>{drag=true;box.setPointerCapture(e.pointerId);mv(e)});
+    box.addEventListener('pointermove',e=>{if(drag)mv(e)});
+    box.addEventListener('pointerup',()=>drag=false);
+    let done=false;
+    new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!done){done=true;let t0=performance.now();
+      (function s(t){const k=(t-t0)/1800;if(k>=1){set(50);return}set(50+Math.sin(k*Math.PI*2)*28);requestAnimationFrame(s)})(t0)}},{threshold:.5}).observe(box);
+  })();
+
+  // --- Protocol ---
+  const protoSteps=[
+   {t:"Знайомство і діагностика",d:"Розповідаєте, що вас турбує і чого хочете. Лікар оглядає зуби, робить знімки й спокійно пояснює, що відбувається.",m:["огляд", "знімки", "розмова"]},
+   {t:"План лікування",d:"Лікар пропонує, як можна виправити ситуацію, пояснює етапи й терміни. Остаточне рішення завжди за вами.",m:["етапи", "терміни", "ваш вибір"]},
+   {t:"Лікування",d:"Візити за графіком, на кожному лікар пояснює, що саме робить. Ви завжди знаєте, що буде далі.",m:["короткі візити", "пояснення"]},
+   {t:"Контроль і корекція",d:"Лікар перевіряє, як просувається лікування, і за потреби уточнює план. Ви бачите зміни й можете поставити будь-яке запитання.",m:["огляди", "зміни", "підтримка лікаря"]},
+   {t:"Підтримка результату",d:"Видаємо індивідуальні ретейнери (тонка дужка або капа, що утримує зуби на місці), щоб зуби не повернулися. Нагадуємо про огляди та чистку.",m:["ретейнери", "огляди", "нагадування"]}
+  ];
+  let pStep=0, pTimer;
+  function renderProto(auto){
+    const L=document.getElementById('protoList'); L.innerHTML='';
+    protoSteps.forEach((s,i)=>{const b=document.createElement('button');b.className='pstep'+(i===pStep?' active':'');
+      b.innerHTML='<span class="pn" style="font-size:12px;font-weight:800;min-width:26px">0'+(i+1)+'</span><span class="huge-title" style="font-size:clamp(22px,2.6vw,34px)">'+s.t+'</span>';
+      b.onclick=()=>{pStep=i;renderProto();restartProto()};L.appendChild(b);
+      const bar=document.createElement('div');bar.className='pbar';bar.innerHTML='<i></i>';L.appendChild(bar);if(i===pStep)bar.firstChild.style.cssText='width:100%';});
+    const s=protoSteps[pStep], P=document.getElementById('protoPanel');
+    P.innerHTML='<div class="dir-panel-anim"><div class="eyebrow" style="color:#D0B48A">Крок 0'+(pStep+1)+' / 05</div><h3 class="huge-title" style="font-size:clamp(28px,3vw,42px);margin:14px 0 16px;color:#fff">'+s.t+'</h3><p style="font-size:16px;line-height:1.65;color:#B9C3C0">'+s.d+'</p></div><div class="dir-panel-anim" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:28px">'+s.m.map(x=>'<span class="glass-d" style="padding:10px 18px;border-radius:999px;font-size:13px;font-weight:700">'+x+'</span>').join('')+'</div>';
+  }
+  function restartProto(){clearInterval(pTimer)}
+
+  // --- Spaces accordion ---
+  const spaces=[
+   {t:'Зона очікування',d:'Тиша, світло та ароматний чай замість черг.',i:'images/img-31.jpg'},
+   {t:'Кабінет ортодонта',d:'3D-сканер і монітор симуляції на кожному кріслі.',i:'images/img-32.jpg'},
+   {t:'Мікроскопна терапія',d:'Лікування під збільшенням Carl Zeiss.',i:'images/img-33.jpg'},
+   {t:'Дитяча зона',d:'Знайомство зі стоматологом у грі.',i:'images/img-34.jpg'}
+  ];
+  function renderSpaces(){
+    const w=document.getElementById('spaces'); w.innerHTML='';
+    spaces.forEach((s,i)=>{const d=document.createElement('div');d.className='sp-i'+(i===0?' active':'');
+      d.innerHTML='<div class="sp-bg" style="background-image:url(\''+s.i+'\');background-position:center 62%"></div><div class="sp-t"><b>'+s.t+'</b><span>'+s.d+'</span></div>';
+      const act=()=>{w.querySelectorAll('.sp-i').forEach(x=>x.classList.remove('active'));d.classList.add('active')};let ht;
+      d.addEventListener('mouseenter',()=>{if(matchMedia('(hover:hover)').matches){clearTimeout(ht);ht=setTimeout(act,130)}});d.addEventListener('mouseleave',()=>clearTimeout(ht));d.addEventListener('click',act);w.appendChild(d)});
+  }
+
+  (function(){const w=document.getElementById('spaces');const set=()=>{const W=w.clientWidth;w.style.setProperty('--spw',innerWidth>960?Math.ceil((W-36)*3.4/6.4)+'px':'100%')};window.addEventListener('resize',set);window.addEventListener('DOMContentLoaded',()=>setTimeout(set,50));window.addEventListener('load',set);})();
+  // --- Testimonials ---
+  const RPH={"1": "images/img-35.jpg", "2": "images/img-36.jpg", "3": "images/img-37.jpg", "4": "images/img-38.jpg", "5": "images/img-39.jpg", "6": "images/img-40.jpg"};
+  const reviews=[
+   {n:"Олена К.",r:"Елайнери, 29 років",p:4,f:"sepia(.12) saturate(1.05)",y:18,z:1.5,q:"Я боялася, що будуть видні капи на роботі. Ніхто навіть не помітив, а результат я бачила на екрані ще на першій консультації."},
+   {n:"Андрій М.",r:"Брекети, 34 роки",p:1,f:"saturate(.5) contrast(1.06) hue-rotate(-10deg)",y:7,z:1.68,q:"Лікар пояснив кожен етап і терміни. Вартість у договорі не змінилася ні на гривню. Це рідкість."},
+   {n:"Ірина Л.",r:"Мама Софії, 11 років",p:6,f:"sepia(.32) saturate(.9) brightness(1.02)",y:18,z:1.5,q:"Донька панічно боялася стоматологів. Перший візит був без лікування, і вона сама попросила прийти ще."},
+   {n:"Дмитро С.",r:"Імплантація, 46 років",p:3,f:"grayscale(1) contrast(1.15) brightness(.97)",y:37,z:1.88,q:"Повернув жувальні зуби за 4 місяці. Планування було цифрове, тож жодних сюрпризів під час операції."},
+   {n:"Марія В.",r:"Вініри, 31 рік",p:2,f:"saturate(1.18) contrast(1.05)",y:18,z:1.95,q:"Усмішка виглядає природно. Усі питають, що я змінила, але ніхто не здогадується про вініри."},
+   {n:"Олексій Б.",r:"Відбілювання, 27 років",p:5,f:"sepia(.15) saturate(.7) contrast(.92) brightness(1.06)",y:3,z:1.72,q:"Дві процедури, жодної чутливості. Колір рівний, а лікар одразу дав план догляду, щоб результат тримався."}
+  ];
+  function renderReviews(){
+    document.getElementById('tscroll').innerHTML=reviews.map(r=>'<div class="glass tcard"><div style="color:#D0B48A;letter-spacing:.2em;font-size:15px">★★★★★</div><p style="font-size:18px;line-height:1.55;font-weight:500;letter-spacing:-.01em">«'+r.q+'»</p><div style="display:flex;align-items:center;gap:14px"><div class="tph"><img loading="lazy" decoding="async" width="58" height="58" alt="Фото: '+r.n+'" src="'+RPH[r.p]+'" style="filter:'+r.f+';object-position:center '+r.y+'%;transform:scale('+r.z+')"></div><div><div style="font-weight:800">'+r.n+'</div><div style="font-size:13px;color:#637571">'+r.r+'</div></div></div></div>').join('');
+  }
+  function tScroll(d){const s=document.getElementById('tscroll');s.scrollBy({left:d*(s.firstElementChild.offsetWidth+20),behavior:'smooth'})}
+
+  window.addEventListener('DOMContentLoaded',()=>{renderProto();restartProto();renderSpaces();renderReviews();
+    document.querySelectorAll('.tcard,.sp-i').forEach(e=>e.classList.add('rv'));});
+  </script>
+
+  
+  <script>
+  window.HERO_MOB=matchMedia('(max-width:960px)').matches||matchMedia('(pointer:coarse)').matches;
+  (function(){const v=document.getElementById('heroVideo');if(window.HERO_MOB){return}v.src='hero.mp4';v.load();})();
+  </script>
+
+  <script>
+  // --- Scroll-scrubbed hero (video follows scroll, plays once, never loops) ---
+  (function(){
+    const sec=document.getElementById('heroScroll'), hero=document.getElementById('hero'),
+          v=document.getElementById('heroVideo'), fl=document.getElementById('heroFloat');
+    let target=0, cur=0, has=false, raf=0;
+    // --- мобільні: послідовність кадрів на canvas (iOS/Android не вміють надійно перемотувати відео) ---
+    let cv=null,cx=null,FR=[],NF=95,lastDraw=-1;
+    if(window.HERO_MOB){
+      v.style.display='none';fl.style.display='none';
+      cv=document.createElement('canvas');cv.width=480;cv.height=960;cv.className='hero-video';cv.setAttribute('aria-hidden','true');cv.style.display='block';cv.style.background="#0F1517 url('images/img-01.jpg') center/cover no-repeat";
+      v.parentNode.insertBefore(cv,v);cx=cv.getContext('2d');
+      const load=i=>{const im=new Image();im.decoding='async';im.onload=()=>{FR[i]=im;if(i===0||i===Math.round(cur*(NF-1))){lastDraw=-1;draw()}};im.src='frames/f'+String(i+1).padStart(3,'0')+'.webp'};
+      load(0);let q=1;const pump=()=>{for(let k=0;k<6&&q<NF;k++)load(q++);if(q<NF)setTimeout(pump,60)};setTimeout(pump,200);
+    }
+    function nearest(i){for(let d=0;d<NF;d++){if(FR[i-d])return FR[i-d];if(FR[i+d])return FR[i+d]}return null}
+    function draw(){
+      if(!cx)return;const f=cur*(NF-1),i=Math.floor(f),fr=f-i;const key=Math.round(f*20);if(key===lastDraw)return;lastDraw=key;
+      const a=nearest(i);if(!a)return;cx.globalAlpha=1;cx.drawImage(a,0,0,480,960);
+      if(fr>0.02&&i<NF-1){const b=FR[i+1];if(b){cx.globalAlpha=fr;cx.drawImage(b,0,0,480,960);cx.globalAlpha=1}}
+    }
+    v.addEventListener('loadedmetadata',()=>{has=true;v.style.display='block';fl.style.display='none';update()});
+    v.addEventListener('error',()=>{},true);
+    const unlock=()=>{v.play().then(()=>v.pause()).catch(()=>{});window.removeEventListener('touchstart',unlock);window.removeEventListener('pointerdown',unlock)};
+    window.addEventListener('touchstart',unlock,{passive:true});window.addEventListener('pointerdown',unlock,{passive:true});
+    function progress(){
+      const r=sec.getBoundingClientRect(), desk=true;
+      const range=sec.offsetHeight-2*window.innerHeight;
+      return Math.max(0,Math.min(1,-r.top/Math.max(1,range)));
+    }
+    function tick(){
+      cur+=(target-cur)*0.07;
+      if(Math.abs(target-cur)<0.0005) cur=target;
+      hero.style.setProperty('--p',cur.toFixed(4));
+      if(cx)draw();
+      if(has && v.duration){ const t=cur*v.duration; if(Math.abs(v.currentTime-t)>0.016) v.currentTime=t; }
+      raf = cur!==target ? requestAnimationFrame(tick) : 0;
+    }
+    function update(){ target=progress(); if(!raf) raf=requestAnimationFrame(tick); }
+    window.addEventListener('scroll',update,{passive:true}); window.addEventListener('resize',update); update();
+  })();
+  
+  // --- Footer: від хаосу до симетрії ---
+  (function(){
+    const ft=document.getElementById('footer'); if(!ft)return;
+    const word=document.getElementById('ftWord'), refl=document.getElementById('ftRefl'), axis=document.getElementById('ftAxis'), tag=document.getElementById('ftTag'), md=document.getElementById('ftMdot');
+    const L=[...word.children], R=[...refl.children];
+    const seed=[[-34,-18,-9,.96],[52,22,12,1.06],[-22,-30,7,.92],[40,26,-13,1.08],[-48,14,10,.95],[30,-24,-8,1.05],[-26,34,14,.93],[46,-14,-10,1.07],[-30,20,9,.96],[20,-10,6,1]];
+    const E=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let cur=reduce?1:0,tgt=0,run=false;
+    function render(t){
+      const e=E(t), k=1-e;
+      const sc=Math.max(.6,word.getBoundingClientRect().width/1100);
+      L.forEach((el,i)=>{const d=seed[i];const tf='translate('+(d[0]*k*sc).toFixed(1)+'px,'+(d[1]*k*sc).toFixed(1)+'px) rotate('+(d[2]*k).toFixed(2)+'deg) scale('+(1+(d[3]-1)*k).toFixed(3)+')';el.style.transform=tf;if(R[i])R[i].style.transform=tf});
+      axis.style.transform='scaleY('+Math.max(0,Math.min(1,(t-.7)/.3)).toFixed(3)+')';
+      refl.style.opacity=(.16*Math.max(0,(t-.75)/.25)).toFixed(3);
+      tag.textContent=t<.985?'Зуби, як і слова, люблять порядок':'Усмішка починається з порядку';
+    }
+    function loop(){
+      const d=tgt-cur;
+      cur+=Math.abs(d)<.0006?d:d*.028;
+      render(cur);
+      if(Math.abs(tgt-cur)>.0006)requestAnimationFrame(loop);else run=false;
+    }
+    function upd(){
+      const vh=innerHeight, r=word.getBoundingClientRect();
+      tgt=reduce?1:Math.max(0,Math.min(1,(vh*0.97-r.top)/(vh*0.6)));
+      if(!run){run=true;requestAnimationFrame(loop)}
+    }
+    let tick=false;
+    const req=()=>{if(!tick){tick=true;requestAnimationFrame(()=>{tick=false;upd()})}};
+    addEventListener('scroll',req,{passive:true});addEventListener('resize',req);render(cur);upd();
+    if(matchMedia('(hover:hover)').matches){
+      ft.addEventListener('mousemove',e=>{const r=ft.getBoundingClientRect();md.style.opacity=.9;md.style.left=(r.width-(e.clientX-r.left))+'px';md.style.top=(e.clientY-r.top)+'px'});
+      ft.addEventListener('mouseleave',()=>{md.style.opacity=0});
+    }
+  })();
+
+  (function(){
+    document.addEventListener('click',e=>{const dg=document.getElementById('legal');if(!dg)return;
+      if(e.target===dg){dg.close();return}
+      const a=e.target.closest('[data-legal]');if(!a)return;e.preventDefault();
+      dg.querySelectorAll('.lg-pane').forEach(p=>p.classList.toggle('on',p.id==='lg-'+a.dataset.legal));dg.querySelector('.lg-box').scrollTop=0;dg.showModal()});
+  })();
+
+  (function(){
+    const cards=[...document.querySelectorAll('#chomu .grid>.glass')];if(!cards.length)return;
+    const T=new Map();
+    const clear=el=>{(T.get(el)||[]).forEach(clearTimeout);T.set(el,[])};
+    // з'являється з пружиною, коли секція вже добре видно
+    const show=new IntersectionObserver(es=>es.forEach(x=>{const el=x.target;
+      if(x.isIntersecting&&!el.classList.contains('pop-in')){clear(el);
+        const d=innerWidth>760?cards.indexOf(el)*100:0;
+        T.get(el).push(setTimeout(()=>{el.classList.add('pop-in');T.get(el).push(setTimeout(()=>el.classList.add('pop-done'),700))},d))}}),
+      {threshold:.55,rootMargin:'0px 0px -12% 0px'});
+    // коли картка повністю поза екраном, ховаємо її, щоб при поверненні анімація зіграла знову
+    const hide=new IntersectionObserver(es=>es.forEach(x=>{const el=x.target;
+      if(!x.isIntersecting){clear(el);el.classList.remove('pop-in','pop-done')}}),{threshold:0});
+    cards.forEach(c=>{T.set(c,[]);show.observe(c);hide.observe(c)});
+  })();
+
+  // --- Мобільні: свайп між напрямами/кроками/кейсами + центрування активної вкладки + прогрес скролу ---
+  (function(){
+    const mob=()=>matchMedia('(max-width:760px)').matches;
+    function swipe(el,fn){let x0=0,y0=0,t0=0;
+      el.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now()},{passive:true});
+      el.addEventListener('touchend',e=>{if(!mob())return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.6&&Date.now()-t0<700)fn(dx<0?1:-1)},{passive:true});}
+    const dirCard=document.querySelector('#napryamy .dark-card');
+    if(dirCard)swipe(dirCard,d=>{const n=currentDirIdx+d;if(n<0||n>=directionsList.length)return;currentDirIdx=n;renderDirections();centerActive('#dirListContainer .active')});
+    const proto=document.getElementById('protoPanel');
+    if(proto)swipe(proto,d=>{const n=pStep+d;if(n<0||n>=protoSteps.length)return;pStep=n;renderProto();centerActive('#protoList .active')});
+    const caseTxt=document.querySelector('#rezultaty .dark-card .grid>div:first-child');
+    if(caseTxt)swipe(caseTxt,d=>{const n=currentCaseIdx+d;if(n<0||n>=clinicalCases.length)return;currentCaseIdx=n;renderCasesBadges();centerActive('#casesBadgesContainer .active')});
+    function centerActive(sel){const a=document.querySelector(sel);if(a&&mob()){const c=a.parentElement;c.scrollTo({left:a.offsetLeft-(c.clientWidth-a.offsetWidth)/2,behavior:'smooth'})}}
+    document.addEventListener('click',e=>{const b=e.target.closest('.dir-nav-btn,.pstep,.case-badge-btn');if(!b||!mob())return;setTimeout(()=>centerActive('#'+b.parentElement.id+' .active'),30)});
+    const bar=document.getElementById('scrollBarM');
+    if(bar)addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;bar.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')'},{passive:true});
+  })();
+</script>
+
+<dialog id="legal" class="legal"><div class="lg-box"><button class="lg-x" aria-label="Закрити" onclick="this.closest('dialog').close()">×</button>
+<div id="lg-privacy" class="lg-pane"><h2>Політика конфіденційності</h2>
+<p class="lg-note">Навчальний проєкт: клініка вигадана, назва юрособи, коди й номери — демонстраційні. Структура відповідає вимогам українського законодавства; для реальної клініки текст має перевірити юрист.</p>
+<p class="lg-date">Редакція від 06.11.2026</p>
+<h3>1. Хто обробляє ваші дані (володілець)</h3><p>ТОВ «Симетрія Клінік», код ЄДРПОУ 00000000, м. Київ, вул. Архітектора Городецького, 11-Б. Пошта для питань про дані: hello@symmetria.ua, телефон +380 (44) 333-88-99.</p>
+<h3>2. Які дані ми збираємо</h3><p>Через форму запису на цьому сайті — лише ім’я та номер телефону. Медичні відомості (діагноз, знімки, історію лікування) сайт не збирає: їх ми отримуємо тільки під час візиту й обробляємо окремо, за правилами лікарської таємниці.</p>
+<h3>3. Мета та підстава</h3><p>Мета — зв’язатися з вами, узгодити дату та час візиту й відповісти на запитання. Підстава — ваша згода, яку ви даєте, поставивши позначку у формі (Закон України «Про захист персональних даних», ст. 11). Дані не використовуються для реклами, автоматичного прийняття рішень чи профілювання.</p>
+<h3>4. Кому передаємо</h3><p>Нікому, крім працівників клініки, які узгоджують запис, і випадків, коли це вимагає закон (наприклад, запит суду чи правоохоронних органів у встановленому порядку). Передачі даних за кордон немає.</p>
+<h3>5. Скільки зберігаємо</h3><p>Якщо ви не стали пацієнтом — не довше 12 місяців після останнього контакту, далі видаляємо. Якщо стали — за правилами ведення медичної документації. Ви можете попросити видалити дані раніше.</p>
+<h3>6. Ваші права (ст. 8 Закону)</h3><p>Ви можете: дізнатися, які ваші дані ми маємо і для чого; отримати до них доступ; вимагати виправити, оновити чи видалити їх; відкликати згоду в будь-який момент; заперечувати проти обробки; звернутися зі скаргою до Уповноваженого Верховної Ради України з прав людини або до суду. Напишіть на hello@symmetria.ua, і ми відповімо протягом 30 днів.</p>
+<h3>7. Як захищаємо</h3><p>Доступ до даних мають лише уповноважені працівники; канал передачі з сайту захищений (HTTPS).</p>
+<h3>8. Діти</h3><p>Якщо запис оформлюється для дитини до 18 років, форму заповнює один із батьків або законний представник, який і дає згоду.</p>
+<h3>9. Cookie</h3><p>Сайт не використовує рекламні, аналітичні чи сторонні cookie, лише технічно необхідні для роботи сторінки. Якщо це зміниться, ми попросимо вашу згоду та оновимо цю політику.</p>
+<h3>10. Зміни</h3><p>Нову редакцію політики ми публікуємо на цій сторінці з датою зміни.</p></div>
+<div id="lg-terms" class="lg-pane"><h2>Умови користування сайтом</h2>
+<p class="lg-note">Навчальний проєкт: клініка вигадана, назва юрособи, коди й номери — демонстраційні. Структура відповідає вимогам українського законодавства; для реальної клініки текст має перевірити юрист.</p>
+<p class="lg-date">Редакція від 06.11.2026</p>
+<h3>1. Інформаційний характер</h3><p>Матеріали сайту мають ознайомчий характер. Вони не є медичною консультацією, діагнозом, планом лікування чи публічною офертою (ст. 641 Цивільного кодексу України).</p>
+<h3>2. Консультація лікаря обов’язкова</h3><p>Є протипоказання. Перед будь-яким лікуванням необхідна консультація лікаря. Не ставте собі діагноз і не лікуйтеся самостійно за матеріалами сайту: самолікування може бути шкідливим для здоров’я.</p>
+<h3>3. Результат індивідуальний</h3><p>Приклади робіт і описи методів не гарантують однакового результату. План, строки та вартість лікування визначає лікар після огляду та діагностики.</p>
+<h3>4. Ціни</h3><p>Вартість на сайті орієнтовна. Остаточну суму лікар узгоджує з пацієнтом письмово до початку лікування.</p>
+<h3>5. Авторські права</h3><p>Тексти, зображення, відео та дизайн сайту охороняються Законом України «Про авторське право і суміжні права». Використання без письмової згоди Symmetria заборонено, крім цитування з посиланням на джерело.</p>
+<h3>6. Відповідальність</h3><p>Ми докладаємо зусиль, щоб інформація була точною й актуальною, але не відповідаємо за рішення, ухвалені лише на підставі матеріалів сайту.</p>
+<h3>7. Посилання на інші сайти</h3><p>Соціальні мережі та інші ресурси, на які веде сайт, мають власні правила; ми за них не відповідаємо.</p>
+<h3>8. Право та мова</h3><p>Ці умови регулюються законодавством України. Сайт ведеться українською мовою.</p>
+<h3>9. Звернення пацієнтів</h3><p>Скарги та пропозиції: hello@symmetria.ua. Права споживачів захищає Держпродспоживслужба, а за потреби — суд.</p></div>
+<div id="lg-req" class="lg-pane"><h2>Реквізити та ліцензія</h2>
+<p class="lg-note">Навчальний проєкт: клініка вигадана, назва юрособи, коди й номери — демонстраційні. Структура відповідає вимогам українського законодавства; для реальної клініки текст має перевірити юрист.</p>
+<h3>Виконавець послуг</h3><p>Товариство з обмеженою відповідальністю «Симетрія Клінік»<br>Код ЄДРПОУ: 00000000 (демо)<br>Місцезнаходження та місце надання послуг: м. Київ, вул. Архітектора Городецького, 11-Б<br>Телефон: +380 (44) 333-88-99<br>Пошта: hello@symmetria.ua</p>
+<h3>Ліцензія</h3><p>Господарська діяльність з медичної практики здійснюється на підставі ліцензії МОЗ України: наказ № 000 від 00.00.2026 (демо).</p>
+<h3>Режим роботи</h3><p>Пн–Сб 09:00–21:00, неділя за попереднім записом.</p>
+<h3>Скарги</h3><p>hello@symmetria.ua. Ми відповідаємо протягом 30 днів.</p></div></div></dialog>
+<div class="scrollbar-m" id="scrollBarM"></div>
+</body>
+</html>
