@@ -521,6 +521,10 @@
     .totop{bottom:84px!important}
     .scrollhint{bottom:88px!important}
     @media (max-width:960px){.totop{bottom:84px!important;right:16px!important}}
+  
+    /* Мобільний hero: повний кадр 16:9 зверху + розмитий фон з того ж кадру */
+    .hero-mbg{filter:blur(26px) brightness(.55) saturate(1.1);transform:scale(1.35);object-fit:cover}
+    .hero-mfg{position:absolute;left:0;right:0;top:74px;width:100%;height:auto;aspect-ratio:16/9;z-index:2;display:block;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%)}
   </style>
 <script>document.documentElement.classList.add("js")</script>
 </head>
@@ -1375,21 +1379,24 @@
           v=document.getElementById('heroVideo'), fl=document.getElementById('heroFloat');
     let target=0, cur=0, has=false, raf=0;
     // --- мобільні: послідовність кадрів на canvas (iOS/Android не вміють надійно перемотувати відео) ---
-    let cv=null,cx=null,FR=[],NF=95,lastDraw=-1;
+    let cv=null,cx=null,bg=null,bx=null,FR=[],NF=95,lastDraw=-1;
     if(window.HERO_MOB){
-      v.style.display='none';fl.style.display='none';
-      cv=document.createElement('canvas');cv.width=480;cv.height=960;cv.className='hero-video';cv.setAttribute('aria-hidden','true');cv.style.display='block';cv.style.background="#0F1517 url('images/img-01.jpg') center/cover no-repeat";
-      v.parentNode.insertBefore(cv,v);cx=cv.getContext('2d');
+      v.style.setProperty('display','none','important');v.removeAttribute('poster');fl.style.setProperty('display','none','important');
+      // фон: той самий кадр, розтягнутий і розмитий (щоб не було чорних смуг); передній план: ПОВНИЙ кадр 16:9
+      bg=document.createElement('canvas');bg.width=96;bg.height=54;bg.className='hero-video hero-mbg';bg.setAttribute('aria-hidden','true');
+      cv=document.createElement('canvas');cv.width=800;cv.height=450;cv.className='hero-mfg';cv.setAttribute('aria-hidden','true');
+      cv.style.background="#0F1517 url('images/img-01.jpg') center/cover no-repeat";
+      v.parentNode.insertBefore(bg,v);v.parentNode.insertBefore(cv,v);cx=cv.getContext('2d');bx=bg.getContext('2d');
       const load=i=>{const im=new Image();im.decoding='async';im.onload=()=>{FR[i]=im;if(i===0||i===Math.round(cur*(NF-1))){lastDraw=-1;draw()}};im.src='frames/f'+String(i+1).padStart(3,'0')+'.webp'};
       load(0);let q=1;const pump=()=>{for(let k=0;k<6&&q<NF;k++)load(q++);if(q<NF)setTimeout(pump,60)};setTimeout(pump,200);
     }
     function nearest(i){for(let d=0;d<NF;d++){if(FR[i-d])return FR[i-d];if(FR[i+d])return FR[i+d]}return null}
     function draw(){
       if(!cx)return;const f=cur*(NF-1),i=Math.floor(f),fr=f-i;const key=Math.round(f*20);if(key===lastDraw)return;lastDraw=key;
-      const a=nearest(i);if(!a)return;cx.globalAlpha=1;cx.drawImage(a,0,0,480,960);
-      if(fr>0.02&&i<NF-1){const b=FR[i+1];if(b){cx.globalAlpha=fr;cx.drawImage(b,0,0,480,960);cx.globalAlpha=1}}
-    }
-    v.addEventListener('loadedmetadata',()=>{has=true;v.style.display='block';fl.style.display='none';update()});
+      const a=nearest(i);if(!a)return;const b2=(fr>0.02&&i<NF-1)?FR[i+1]:null;
+      cx.globalAlpha=1;cx.drawImage(a,0,0,800,450);bx.globalAlpha=1;bx.drawImage(a,0,0,96,54);
+      if(b2){cx.globalAlpha=fr;cx.drawImage(b2,0,0,800,450);bx.globalAlpha=fr;bx.drawImage(b2,0,0,96,54);cx.globalAlpha=1;bx.globalAlpha=1}
+    }    v.addEventListener('loadedmetadata',()=>{has=true;v.style.display='block';fl.style.display='none';update()});
     v.addEventListener('error',()=>{},true);
     const unlock=()=>{v.play().then(()=>v.pause()).catch(()=>{});window.removeEventListener('touchstart',unlock);window.removeEventListener('pointerdown',unlock)};
     window.addEventListener('touchstart',unlock,{passive:true});window.addEventListener('pointerdown',unlock,{passive:true});
