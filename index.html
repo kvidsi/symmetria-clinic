@@ -324,8 +324,13 @@
     .hero-stage{position:absolute!important;inset:0!important;height:auto!important;z-index:1;overflow:hidden}
     .hero-video{display:block!important;position:absolute!important;inset:0;width:100%;height:100%!important;object-fit:cover;z-index:1}
 
+
+    html.bake #hero .hero-nav,html.bake #hero .hero-card{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;isolation:isolate}
+    html.bake #hero .hero-nav{position:relative}
+    .gl-bk{position:absolute;inset:0;width:100%;height:100%;z-index:-1;border-radius:inherit;pointer-events:none;background:rgba(38,44,46,.6)}
+    html.bake #hero.cards-off .hero-card{visibility:hidden}
+    html.bake #hero .hero-card,html.bake #hero .hero-word{will-change:transform,opacity}
     .hero-dcv{object-fit:cover}
-    .hero-grain{position:absolute;inset:0;z-index:2;pointer-events:none;background-size:160px 160px;opacity:.07;mix-blend-mode:overlay}
     .hero-float{display:none!important}
     .hero-stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,14,.55),rgba(10,12,14,0) 30%,rgba(10,12,14,0) 55%,rgba(10,12,14,.6))}
     .hero-top{position:absolute;left:28px;right:28px;top:26px;z-index:10}
@@ -1403,56 +1408,50 @@
       const load=i=>{const im=new Image();im.decoding='async';im.onload=()=>{FR[i]=im;if(i===0||i===Math.round(cur*(NF-1))){lastDraw=-1;draw()}};im.src='frames/f'+String(i+1).padStart(3,'0')+'.webp'};
       load(0);let q=1;const pump=()=>{for(let k=0;k<6&&q<NF;k++)load(q++);if(q<NF)setTimeout(pump,60)};setTimeout(pump,200);
     }
-    // --- десктоп: послідовність кадрів 1600x896 на canvas (без перемотки відео -> без лагів) ---
-    let DN=190,DB=[],DBM={},dcv=null,dcx=null,dlast=-1,dfly=0,need=()=>{};
+    // --- десктоп: кадри 1280x720, УСІ розпаковані заздалегідь (під час скролу нічого не декодується) ---
+    // «скло» карток у hero малюємо самі (маленький розмитий шматок кадру), бо живий backdrop-filter
+    // поверх картинки, що змінюється, змушує браузер перераховувати розмиття на кожному кадрі -> лаги
+    let DN=143,DBM=[],dcv=null,dcx=null,dlast=-1,GL=[];
     if(!window.HERO_MOB){
+      document.documentElement.classList.add('bake');
       v.style.setProperty('display','none','important');v.removeAttribute('poster');
-      dcv=document.createElement('canvas');dcv.width=1600;dcv.height=896;dcv.className='hero-video hero-dcv';dcv.setAttribute('aria-hidden','true');
+      dcv=document.createElement('canvas');dcv.width=1280;dcv.height=720;dcv.className='hero-video hero-dcv';dcv.setAttribute('aria-hidden','true');
       dcv.style.background="#0F1517 url('images/img-01.jpg') center/cover no-repeat";
       v.parentNode.insertBefore(dcv,v);dcx=dcv.getContext('2d',{alpha:false});
-      try{
-        const grain=document.createElement('div');grain.className='hero-grain';grain.setAttribute('aria-hidden','true');
-        const gc=document.createElement('canvas');gc.width=gc.height=160;const gg=gc.getContext('2d'),id=gg.createImageData(160,160);
-        for(let k=0;k<id.data.length;k+=4){const n=128+(Math.random()-.5)*90;id.data[k]=id.data[k+1]=id.data[k+2]=n;id.data[k+3]=255}
-        gg.putImageData(id,0,0);grain.style.backgroundImage='url('+gc.toDataURL('image/png')+')';
-        v.parentNode.insertBefore(grain,v);
-      }catch(e){}
+      hero.querySelectorAll('.hero-nav,.hero-card').forEach(el=>{
+        const c=document.createElement('canvas');c.className='gl-bk';c.width=32;c.height=24;c.setAttribute('aria-hidden','true');
+        el.insertBefore(c,el.firstChild);const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+        GL.push({el:el,c:c,x:x,card:el.classList.contains('hero-card')});
+      });
       const nm=i=>'frames_d/d'+String(i+1).padStart(3,'0')+'.webp';
-      const W=11,KEEP=16;
-      const decode=b=>window.createImageBitmap?createImageBitmap(b):new Promise((ok,no)=>{const u=URL.createObjectURL(b),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);ok(im)};im.onerror=no;im.src=u});
-      const drop=k=>{const m=DBM[k];if(m&&m.close)m.close();delete DBM[k]};
-      // декодуємо лише кадри біля поточної позиції, найближчі першими, не більше 3 одночасно
-      need=()=>{
-        const c=Math.round(cur*(DN-1));
-        for(const k in DBM){if(Math.abs(k-c)>KEEP&&+k!==0)drop(k)}
-        for(let d=0;d<=W&&dfly<3;d++){
-          for(const i of d?[c+d,c-d]:[c]){
-            if(dfly>=3)break;
-            if(i<0||i>=DN||!DB[i]||DBM[i]||DB[i].p)continue;
-            DB[i].p=1;dfly++;const idx=i;
-            decode(DB[idx].b).then(m=>{dfly--;DB[idx].p=0;const cc=Math.round(cur*(DN-1));
-              if(Math.abs(idx-cc)>KEEP&&idx!==0){if(m.close)m.close()}else{DBM[idx]=m}
-              dlast=-1;ddraw();need()}).catch(()=>{dfly--;DB[idx].p=0;DB[idx].bad=(DB[idx].bad||0)+1})
-          }
-        }
-      };
-      // завантаження файлів: 0, потім кожен 8-й (груба чернетка), потім решта; 5 паралельних, з повтором
-      const order=[0];for(let i=8;i<DN;i+=8)order.push(i);for(let i=1;i<DN;i++)if(i%8)order.push(i);
+      const decode=b=>window.createImageBitmap?createImageBitmap(b):new Promise((ok,no)=>{const u=URL.createObjectURL(b),im=new Image();im.onload=()=>ok(im);im.onerror=no;im.src=u});
+      const step=(navigator.deviceMemory&&navigator.deviceMemory<=4)?2:1;
+      const order=[0];for(let i=8;i<DN;i+=8)order.push(i);for(let i=1;i<DN;i++)if(i%8&&i%step===0)order.push(i);
       let oi=0,act=0;
-      const go=()=>{while(act<5&&oi<order.length){act++;(function load(i,t){fetch(nm(i)).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(bl=>{DB[i]={b:bl};act--;need();go()}).catch(()=>{if(t<2)setTimeout(()=>load(i,t+1),400);else{act--;go()}})})(order[oi++],0)}};
+      const go=()=>{while(act<4&&oi<order.length){act++;(function load(i,t){fetch(nm(i)).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(decode).then(m=>{DBM[i]=m;act--;dlast=-1;ddraw();go()}).catch(()=>{if(t<2)setTimeout(()=>load(i,t+1),400);else{act--;go()}})})(order[oi++],0)}};
       go();
+      window.addEventListener('resize',()=>{dlast=-1;ddraw()});
+    }
+    function glass(a){
+      const R=dcv.getBoundingClientRect();if(!R.width)return;
+      const sc=Math.max(R.width/1280,R.height/720),ox=(R.width-1280*sc)/2,oy=(R.height-720*sc)/2;
+      for(const g of GL){
+        if(g.card&&cur>0.6)continue;
+        const E=g.el.getBoundingClientRect();if(!E.width)continue;
+        const w=Math.max(8,Math.round(E.width/18)),h=Math.max(6,Math.round(E.height/18));
+        if(g.c.width!==w||g.c.height!==h){g.c.width=w;g.c.height=h;g.x.imageSmoothingQuality='high'}
+        if('filter' in g.x)g.x.filter='saturate(1.5)';
+        g.x.drawImage(a,(E.left-R.left-ox)/sc,(E.top-R.top-oy)/sc,E.width/sc,E.height/sc,0,0,w,h);
+        if('filter' in g.x)g.x.filter='none';
+        g.x.fillStyle='rgba(255,255,255,.07)';g.x.fillRect(0,0,w,h);
+      }
     }
     function ddraw(){
-      if(!dcx)return;const f=cur*(DN-1),i=Math.floor(f),fr=f-i;
-      need();
-      const key=Math.round(f*30);if(key===dlast)return;
-      let a=null;for(let d=0;d<DN&&!a;d++){a=DBM[i-d]||DBM[i+d]||null}
+      if(!dcx)return;const i=Math.round(cur*(DN-1));
+      let a=null,k=i;for(let d=0;d<DN&&!a;d++){if(DBM[i-d]){a=DBM[i-d];k=i-d}else if(DBM[i+d]){a=DBM[i+d];k=i+d}}
       if(!a)return;
-      try{
-        dcx.globalAlpha=1;dcx.drawImage(a,0,0,1600,896);
-        if(fr>0.03&&DBM[i]&&DBM[i+1]){dcx.globalAlpha=fr;dcx.drawImage(DBM[i+1],0,0,1600,896);dcx.globalAlpha=1}
-        dlast=key;
-      }catch(e){dlast=-1}
+      if(k!==dlast){dlast=k;dcx.drawImage(a,0,0)}
+      glass(a);
     }
     function nearest(i){for(let d=0;d<NF;d++){if(FR[i-d])return FR[i-d];if(FR[i+d])return FR[i+d]}return null}
     function draw(){
@@ -1473,7 +1472,7 @@
       cur+=(target-cur)*0.07;
       if(Math.abs(target-cur)<0.0005) cur=target;
       hero.style.setProperty('--p',cur.toFixed(4));
-      if(window.HERO_MOB)hero.classList.toggle('end',cur>0.74);
+      if(window.HERO_MOB)hero.classList.toggle('end',cur>0.74);else hero.classList.toggle('cards-off',cur>0.6);
       if(cx)draw();
       if(dcx)ddraw();
       if(has && v.duration){ const t=cur*v.duration; if(Math.abs(v.currentTime-t)>0.016) v.currentTime=t; }
