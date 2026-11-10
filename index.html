@@ -1404,35 +1404,55 @@
       load(0);let q=1;const pump=()=>{for(let k=0;k<6&&q<NF;k++)load(q++);if(q<NF)setTimeout(pump,60)};setTimeout(pump,200);
     }
     // --- десктоп: послідовність кадрів 1600x896 на canvas (без перемотки відео -> без лагів) ---
-    let DN=190,DB=[],DP=[],DBM={},dcv=null,dcx=null,dlast=-1,need=()=>{};
+    let DN=190,DB=[],DBM={},dcv=null,dcx=null,dlast=-1,dfly=0,need=()=>{};
     if(!window.HERO_MOB){
       v.style.setProperty('display','none','important');v.removeAttribute('poster');
       dcv=document.createElement('canvas');dcv.width=1600;dcv.height=896;dcv.className='hero-video hero-dcv';dcv.setAttribute('aria-hidden','true');
       dcv.style.background="#0F1517 url('images/img-01.jpg') center/cover no-repeat";
       v.parentNode.insertBefore(dcv,v);dcx=dcv.getContext('2d',{alpha:false});
-      const grain=document.createElement('div');grain.className='hero-grain';grain.setAttribute('aria-hidden','true');
-      const gc=document.createElement('canvas');gc.width=gc.height=160;const gg=gc.getContext('2d'),id=gg.createImageData(160,160);
-      for(let k=0;k<id.data.length;k+=4){const n=128+(Math.random()-.5)*90;id.data[k]=id.data[k+1]=id.data[k+2]=n;id.data[k+3]=255}
-      gg.putImageData(id,0,0);grain.style.backgroundImage='url('+gc.toDataURL('image/png')+')';
-      v.parentNode.insertBefore(grain,v);
+      try{
+        const grain=document.createElement('div');grain.className='hero-grain';grain.setAttribute('aria-hidden','true');
+        const gc=document.createElement('canvas');gc.width=gc.height=160;const gg=gc.getContext('2d'),id=gg.createImageData(160,160);
+        for(let k=0;k<id.data.length;k+=4){const n=128+(Math.random()-.5)*90;id.data[k]=id.data[k+1]=id.data[k+2]=n;id.data[k+3]=255}
+        gg.putImageData(id,0,0);grain.style.backgroundImage='url('+gc.toDataURL('image/png')+')';
+        v.parentNode.insertBefore(grain,v);
+      }catch(e){}
       const nm=i=>'frames_d/d'+String(i+1).padStart(3,'0')+'.webp';
-      need=i=>{ if(i<0||i>=DN||DBM[i]||DP[i]||!DB[i])return; if(Math.abs(i-Math.round(cur*(DN-1)))>10&&i!==0)return; DP[i]=1;
-        createImageBitmap(DB[i]).then(m=>{DP[i]=0;DBM[i]=m;dlast=-1;ddraw()}).catch(()=>{DP[i]=0}) };
-      window.__heroNeed=need;
-      // порядок завантаження: 0, потім кожен 8-й (груба «чернетка»), потім решта
+      const W=11,KEEP=16;
+      const decode=b=>window.createImageBitmap?createImageBitmap(b):new Promise((ok,no)=>{const u=URL.createObjectURL(b),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);ok(im)};im.onerror=no;im.src=u});
+      const drop=k=>{const m=DBM[k];if(m&&m.close)m.close();delete DBM[k]};
+      // декодуємо лише кадри біля поточної позиції, найближчі першими, не більше 3 одночасно
+      need=()=>{
+        const c=Math.round(cur*(DN-1));
+        for(const k in DBM){if(Math.abs(k-c)>KEEP&&+k!==0)drop(k)}
+        for(let d=0;d<=W&&dfly<3;d++){
+          for(const i of d?[c+d,c-d]:[c]){
+            if(dfly>=3)break;
+            if(i<0||i>=DN||!DB[i]||DBM[i]||DB[i].p)continue;
+            DB[i].p=1;dfly++;const idx=i;
+            decode(DB[idx].b).then(m=>{dfly--;DB[idx].p=0;const cc=Math.round(cur*(DN-1));
+              if(Math.abs(idx-cc)>KEEP&&idx!==0){if(m.close)m.close()}else{DBM[idx]=m}
+              dlast=-1;ddraw();need()}).catch(()=>{dfly--;DB[idx].p=0;DB[idx].bad=(DB[idx].bad||0)+1})
+          }
+        }
+      };
+      // завантаження файлів: 0, потім кожен 8-й (груба чернетка), потім решта; 5 паралельних, з повтором
       const order=[0];for(let i=8;i<DN;i+=8)order.push(i);for(let i=1;i<DN;i++)if(i%8)order.push(i);
-      let oi=0,act=0;const go=()=>{while(act<4&&oi<order.length){act++;const i=order[oi++];(function(i){fetch(nm(i)).then(r=>r.blob()).then(b=>{DB[i]=b;act--;need(i);go()}).catch(()=>{act--;go()})})(i)}};
+      let oi=0,act=0;
+      const go=()=>{while(act<5&&oi<order.length){act++;(function load(i,t){fetch(nm(i)).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(bl=>{DB[i]={b:bl};act--;need();go()}).catch(()=>{if(t<2)setTimeout(()=>load(i,t+1),400);else{act--;go()}})})(order[oi++],0)}};
       go();
     }
     function ddraw(){
-      if(!dcx)return;const f=cur*(DN-1),i=Math.floor(f),fr=f-i,c=Math.round(f);
-      for(let j=c-8;j<=c+8;j++)need(j);
-      for(const k in DBM){if(Math.abs(k-c)>14&&+k!==0){DBM[k].close();delete DBM[k]}}
+      if(!dcx)return;const f=cur*(DN-1),i=Math.floor(f),fr=f-i;
+      need();
       const key=Math.round(f*30);if(key===dlast)return;
-      let a=null,b=null;for(let d=0;d<DN&&!a;d++){a=DBM[i-d]||DBM[i+d]||null}
-      if(!a)return;dlast=key;
-      dcx.globalAlpha=1;dcx.drawImage(a,0,0,1600,896);
-      if(fr>0.03&&DBM[i+1]&&DBM[i]){dcx.globalAlpha=fr;dcx.drawImage(DBM[i+1],0,0,1600,896);dcx.globalAlpha=1}
+      let a=null;for(let d=0;d<DN&&!a;d++){a=DBM[i-d]||DBM[i+d]||null}
+      if(!a)return;
+      try{
+        dcx.globalAlpha=1;dcx.drawImage(a,0,0,1600,896);
+        if(fr>0.03&&DBM[i]&&DBM[i+1]){dcx.globalAlpha=fr;dcx.drawImage(DBM[i+1],0,0,1600,896);dcx.globalAlpha=1}
+        dlast=key;
+      }catch(e){dlast=-1}
     }
     function nearest(i){for(let d=0;d<NF;d++){if(FR[i-d])return FR[i-d];if(FR[i+d])return FR[i+d]}return null}
     function draw(){
